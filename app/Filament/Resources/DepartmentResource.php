@@ -29,12 +29,25 @@ class DepartmentResource extends Resource
                 TextInput::make('name')
                     ->live(onBlur: true)
                     ->required()
-                ->afterStateUpdated(function (string $operation, $state, callable$set){
-                    $set('slug', Str::slug($state));
-                }),
+                    ->rules(['string', 'max:255', 'unique:departments,name'])
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        if (is_string($state) && !empty($state)) {
+                            $slug = Str::slug($state);
+
+                            // Ensure unique slugs
+                            $existingSlugCount = Department::where('slug', 'LIKE', "$slug%")->count();
+                            if ($existingSlugCount > 0) {
+                                $slug .= '-' . ($existingSlugCount + 1);
+                            }
+
+                            $set('slug', $slug);
+                        }
+                    }),
                 TextInput::make('slug')
-                    ->required(),
+                    ->required()
+                    ->rules(['string', 'max:255', 'unique:departments,slug']),
                 Checkbox::make('active')
+                    ->default(true),
             ]);
     }
 
@@ -44,12 +57,10 @@ class DepartmentResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->sortable()
-                    ->searchable()
+                    ->searchable(),
             ])
             ->defaultSort('created_at', 'desc')
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
@@ -60,18 +71,18 @@ class DepartmentResource extends Resource
                 ]),
             ]);
     }
-    public function relations(): array
+
+    public static function getValidationMessages(): array
     {
         return [
-            CategoriesRelationManager::class
+            'name.unique' => 'The name has already been taken.',
+            'slug.unique' => 'The slug has already been taken.',
         ];
     }
 
     public static function getRelations(): array
     {
-        return [
-            CategoriesRelationManager::class
-        ];
+        return [CategoriesRelationManager::class];
     }
 
     public static function getPages(): array
@@ -81,10 +92,5 @@ class DepartmentResource extends Resource
             'create' => Pages\CreateDepartment::route('/create'),
             'edit' => Pages\EditDepartment::route('/{record}/edit'),
         ];
-    }
-
-    public static function canViewAny(): bool
-    {
-        return true;
     }
 }

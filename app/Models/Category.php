@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Category extends Model
 {
 
+
 }
