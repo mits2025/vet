@@ -33,6 +33,7 @@ class DepartmentResource extends Resource
                     $set('slug', Str::slug($state));
                 }),
                 TextInput::make('slug')
+                    ->label('route')
                     ->required(),
                 Checkbox::make('active')
             ]);

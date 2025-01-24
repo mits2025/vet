@@ -24,6 +24,7 @@
         "vite": "^6.0"
     },
     "dependencies": {
+        "cors": "^2.8.5",
         "daisyui": "^4.12.23"
     }
 }
