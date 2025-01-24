@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Enum\ProductStatusEnum;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Models\Department;
 use App\Models\Product;
 use Filament\Actions\CreateAction;
 use Filament\Forms;
@@ -32,6 +33,7 @@ class ProductResource extends Resource
                 Forms\Components\Grid::make()
                     ->schema([
                         TextInput::make('title')
+                            ->label('Product') // Change the display name to "Product"
                             ->live(onBlur: true)
                             ->required()
                             ->afterStateUpdated(function (string $operation, $state, callable $set) {
@@ -99,10 +101,24 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Product') // Change the display name to "Product"
+                    ->sortable()
+                    ->words(10)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->colors(ProductStatusEnum::colors()),
+                Tables\Columns\TextColumn::make('department.name'),
+                Tables\Columns\TextColumn::make('category.name'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->options(ProductStatusEnum::labels()),
+                Tables\Filters\SelectFilter::make('department_id')
+                    ->relationship('department', 'name')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
