@@ -6,6 +6,7 @@ use App\Enum\ProductStatusEnum;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\Pages\EditProduct;
 use App\Filament\Resources\ProductResource\Pages\ProductImages;
+use App\Filament\Resources\ProductResource\Pages\ProductVariationTypes;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Department;
 use App\Models\Product;
@@ -14,6 +15,7 @@ use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Pages\SubNavigationPosition;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -29,6 +31,8 @@ class ProductResource extends Resource
     protected static ?string $model = Product::class;
 
     protected static ?string $navigationIcon = 'heroicon-s-queue-list';
+
+    protected static  SubNavigationPosition $subNavigationPosition = SubNavigationPosition::End;
 
     public static function form(Form $form): Form
     {
@@ -154,6 +158,7 @@ class ProductResource extends Resource
             'create' => Pages\CreateProduct::route('/create'),
             'edit' => Pages\EditProduct::route('/{record}/edit'),
             'images' => Pages\ProductImages::route('/{record}/images'),
+            'variation-types' => Pages\ProductVariationTypes::route('/{record}/variation-types'),
         ];
     }
 
@@ -163,6 +168,7 @@ class ProductResource extends Resource
             ([
                 EditProduct::class,
                 ProductImages::class,
+                ProductVariationTypes::class,
             ]);
 
     }
