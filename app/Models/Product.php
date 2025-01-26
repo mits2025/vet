@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enum\ProductStatusEnum;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,6 +15,7 @@ class Product extends Model implements HasMedia
 {
     use InteractsWithMedia;
 
+
     public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumb')
@@ -23,6 +26,16 @@ class Product extends Model implements HasMedia
 
         $this->addMediaConversion('large')
             ->width(1200);
+    }
+
+    public function scopeForVendor(\Illuminate\Contracts\Database\Eloquent\Builder $query)
+    {
+        return $query->where('created_by', auth()->user()->id);
+    }
+
+    public function scopePublished (Builder $query)
+    {
+        return $query->where('status', ProductStatusEnum::Published);
     }
 
     public function department(): BelongsTo
@@ -37,5 +50,10 @@ class Product extends Model implements HasMedia
     public function variationTypes(): HasMany
     {
         return $this->hasMany(VariationType::class);
+    }
+
+    public function variations(): HasMany
+    {
+        return $this->hasMany(ProductVariation::class, 'product_id');
     }
 }

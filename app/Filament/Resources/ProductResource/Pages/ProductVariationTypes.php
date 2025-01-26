@@ -25,6 +25,7 @@ class ProductVariationTypes extends EditRecord
         return $form
             ->schema([
                 Repeater::make('variationTypes')
+                    ->label(false)
                     ->relationship()
                     ->collapsible()
                     ->defaultItems(1)
@@ -45,7 +46,7 @@ class ProductVariationTypes extends EditRecord
                             ->columns(1) // Stack fields for better alignment
                             ->schema([
                                 TextInput::make('name')
-                                    ->label('Option Name')
+                                    ->label('Name')
                                     ->required()
                                     ->columnSpanFull(),
                                 SpatieMediaLibraryFileUpload::make('images')
