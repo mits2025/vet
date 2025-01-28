@@ -118,7 +118,7 @@ class ProductResource extends Resource
                     ->label('image')
                     ->collection('images')
                     ->limit(1)
-                    ->conversion('thumb'),
+                    ->conversion('thumb'),// Hide by default on smaller screens
                 Tables\Columns\TextColumn::make('title')
                     ->label('Product') // Change the display name to "Product"
                     ->sortable()
@@ -127,10 +127,13 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->colors(ProductStatusEnum::colors()),
-                Tables\Columns\TextColumn::make('department.name'),
-                Tables\Columns\TextColumn::make('category.name'),
+                Tables\Columns\TextColumn::make('department.name')
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
+                    ->toggleable(isToggledHiddenByDefault: false),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')

@@ -19,14 +19,21 @@ class Product extends Model implements HasMedia
     public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumb')
-            ->width(100);
+            ->width(100)
+            ->height(100)
+            ->fit('crop', 100, 100); // Ensures a square crop
 
         $this->addMediaConversion('small')
-            ->width(480);
+            ->width(480)
+            ->height(480)
+            ->fit('crop', 480, 480); // Ensures a square crop
 
         $this->addMediaConversion('large')
-            ->width(1200);
+            ->width(1200)
+            ->height(1200)
+            ->fit('crop', 1200, 1200); // Ensures a square crop
     }
+
 
     public function scopeForVendor(\Illuminate\Contracts\Database\Eloquent\Builder $query)
     {

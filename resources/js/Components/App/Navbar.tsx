@@ -8,7 +8,7 @@ function Navbar() {
     return (
         <div className="navbar bg-base-100 shadow-md z-10 relative">
             <div className="flex-1">
-                <a className="btn btn-ghost text-xl">VET</a>
+                <a href="/" className="btn btn-ghost text-xl">VET</a>
             </div>
             <div className="form-control flex justify-center items-center w-full">
                 <input

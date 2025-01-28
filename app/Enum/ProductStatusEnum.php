@@ -4,8 +4,8 @@ namespace App\Enum;
 
 enum ProductStatusEnum: string
 {
-    case Draft = 'draf';
-    case Published = 'published';
+    case Draft = 'Draft';
+    case Published = 'Published';
     public static function labels(): array
     {
         return [
