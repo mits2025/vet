@@ -43,7 +43,7 @@ class ProductVariations extends EditRecord
                             ->schema($fields)
                             ->columns(3),
                         TextInput::make('quantity')
-                            ->label('Quantity')
+                            ->label('   ')
                             ->numeric(),
                         TextInput::make('price')
                             ->label('Price')
