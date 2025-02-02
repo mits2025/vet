@@ -131,6 +131,10 @@
 .list {
     grid-template-columns: repeat(2, 1fr);
 }
+.navbar {
+    position: sticky !important;
+    top: 0;
+}
 
 /* Responsive Grid */
 @media (min-width: 520px) {
