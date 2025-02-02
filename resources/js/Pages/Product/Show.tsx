@@ -226,7 +226,7 @@ function Show({product, variationOptions} : {
         <AuthenticatedLayout>
             <Head title={product.title} />
 
-            <div className="container mx-auto p-6 lg:p-12 ml-4">
+            <div className="mx-auto p-6 lg:p-12 ml-4">
                 <div className="grid gap-10 grid-cols-1 lg:grid-cols-12 items-start sticky">
 
                     {/* Product Image Carousel - Sticky on Scroll */}

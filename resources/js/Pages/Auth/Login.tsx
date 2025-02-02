@@ -36,7 +36,7 @@ export default function Login({
     return (
         <AuthenticatedLayout>
             <Head title="Log in" />
-            <div className="flex h-screen">
+            <div className="flex mx-auto h-screen">
                 {/* Left Side */}
                 <div className="flex-grow bg-gray-100"></div>
 
