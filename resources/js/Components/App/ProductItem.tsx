@@ -4,7 +4,7 @@ import {Link} from '@inertiajs/react';
 export default function ProductItem({product}: {product: Product}) {
 
     return (
-        <div className="card bg-white shadow-lg rounded-lg w-64 overflow-hidden">
+        <div className="prodlist card bg-white shadow-lg rounded-lg w-64 overflow-hidden">
             <Link href={route('product.show', product.slug)} className="block">
                 <figure className="w-full aspect-square bg-gray-100">
                     <img
@@ -23,8 +23,8 @@ export default function ProductItem({product}: {product: Product}) {
                     in <Link href="/" className="text-blue-500 hover:underline">{product.department.name}</Link>
                 </p>
                 <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold text-green-600">{product.price}</span>
-                    <button className="bg-green-600 text-white text-xs px-3 py-1 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <span className="text-lg font-bold text-gray-800">{product.price}</span>
+                    <button className="bg-black text-white text-xs px-3 py-1 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
                         Add
                     </button>
                 </div>

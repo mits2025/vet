@@ -131,9 +131,9 @@ function Show({product, variationOptions} : {
                             {type.options.map(option => (
                                 <div onClick={() => chooseOption(type.id,option)} key={option.id}>
                                     {option.images && <img src={option.images[0].thumb}
-                                                           alt="" className={'w-[50px] ' + (
+                                                           alt="" className={'w-[60px] ' + (
                                         selectedOptions[type.id]?.id === option.id ?
-                                            'border-2 hover:border-green-500' : ''
+                                            'border-2 hover:border-gray-800' : ''
                                     )}/>}
                                     <p className="text-xs text-gray-500 opacity-75  text-center">{option.name}</p>
 
@@ -146,7 +146,7 @@ function Show({product, variationOptions} : {
                                 <label
                                     key={option.id}
                                     className={` btn ${
-                                        selectedOptions[type.id]?.id === option.id ? 'bg-green-500 text-black' : 'bg-gray-100 text-black'
+                                        selectedOptions[type.id]?.id === option.id ? 'bg-black text-white' : 'bg-gray-100 text-black'
                                     }`}
                                 >
                                     <input
@@ -179,6 +179,7 @@ function Show({product, variationOptions} : {
         const customStyles = {
             control: (provided: any) => ({
                 ...provided,
+                minHeight: '49px', // Reduce the height
                 borderRadius: '4px',
                 borderColor: '#D1D5DB', // Tailwind's 'border-gray-300'
                 '&:hover': { borderColor: '#9CA3AF' }, // Tailwind's 'border-gray-400'
@@ -225,7 +226,7 @@ function Show({product, variationOptions} : {
         <AuthenticatedLayout>
             <Head title={product.title} />
 
-            <div className="page-container mx-auto p-6 lg:p-12">
+            <div className="container mx-auto p-6 lg:p-12 ml-4">
                 <div className="grid gap-10 grid-cols-1 lg:grid-cols-12 items-start sticky">
 
                     {/* Product Image Carousel - Sticky on Scroll */}
@@ -236,13 +237,26 @@ function Show({product, variationOptions} : {
                     </div>
 
                     {/* Product Info */}
-                    <div className="col-span-5 space-y-6">
-                        <h1 className="text-3xl font-bold text-gray-900">{product.title}</h1>
+                    <div className="col-span-5 space-y-4 ml-4">
+                        <h1 className="text-3xl font-bold text-gray-900 w-full">{product.title}</h1>
 
                         {/* Price */}
-                        <div className="text-4xl font-semibold text-primary">
-                            {computedProduct.price}
+                        <div className="pt-6 border-t text-4xl font-semibold text-gray-900">
+                            {(() => {
+                                const formattedPrice = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(computedProduct.price);
+                                const pesoSign = formattedPrice.charAt(0);  // Extract ₱ sign
+                                const priceNumber = formattedPrice.substring(1); // Extract the number part
+
+                                return (
+                                    <>
+                                        <span className="text-2xl align-bottom">{pesoSign}</span>
+                                        {priceNumber}
+                                    </>
+                                );
+                            })()}
                         </div>
+
+
 
                         {/* Variations */}
                         {renderProductVariationTypes()}
@@ -250,13 +264,13 @@ function Show({product, variationOptions} : {
                         {/* Stock Status */}
                         {computedProduct.quantity !== undefined && (
                             <div className={`text-lg font-medium my-4
-                    ${computedProduct.quantity === 0 ? "text-red-600" : "text-yellow-600"}`}>
+                    ${computedProduct.quantity === 0 ? "text-red-600" : "text-black"}`}>
                                 {computedProduct.quantity === 0 ? (
-                                    <span className="bg-red-100 px-4 py-2 rounded-md">
+                                    <span className="bg-gray-100 px-4 py-2 rounded-md">
                            Out of Stock
                         </span>
                                 ) : computedProduct.quantity < 20 ? (
-                                    <span className="bg-yellow-100 px-4 py-2 rounded-md">
+                                    <span className="bg-gray-100 px-4 py-2 rounded-md">
                             Only {computedProduct.quantity} left!
                         </span>
                                 ) : null}

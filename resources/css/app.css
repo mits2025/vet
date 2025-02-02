@@ -63,6 +63,11 @@
     background-color: #eaf4ff;
     color: #4156e2;
 }
+.full-width {
+    width: 100vw;
+    max-width: 100%;
+}
+
 .carousel {
     display: flex;
     overflow: hidden;
@@ -210,4 +215,82 @@
     .aside {
         position: static !important;
     }
+
+    .minidrop {
+        width: 200px;
+    }
+
+    .navbar {
+        padding: 0.5rem 1rem;
+    }
+
+    .btn-ghost {
+        padding: 0.5rem;
+    }
+
+    .drawer-side {
+        z-index: 10;
+    }
+
+    .input {
+        font-size: 0.875rem;
+    }
+
+    .login {
+        margin-left: 12px;
+    }
+
+    .prodlist {
+        width: 200px;
+    }
+    .hero {
+        width: fit-content;
+    }
+    .main-container{
+        width: fit-content;
+    }
 }
+.list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Always 2 columns */
+    gap: 16px; /* Adjust the gap between items */
+    padding: 16px;
+}
+
+.product-item img {
+    width: 100%; /* Make images responsive */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Ensure images are cropped appropriately */
+}
+
+/* Optional: Adjust grid layout for larger screens */
+@media (min-width: 640px) {
+    .list {
+        grid-template-columns: repeat(2, 1fr); /* Keep 2 columns even on larger screens */
+    }
+
+}
+
+@media (min-width: 768px) {
+    .list {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns for medium screens */
+    }
+
+}
+
+@media (min-width: 1024px) {
+    .list {
+        grid-template-columns: repeat(4, 1fr); /* 4 columns for large screens */
+    }
+
+}
+
+@media (min-width: 1280px) {
+    .list {
+        grid-template-columns: repeat(5, 1fr); /* 5 columns for extra large screens */
+    }
+
+}
+
+
+

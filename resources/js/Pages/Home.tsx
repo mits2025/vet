@@ -21,7 +21,7 @@ export default function Home({
     return (
         <AuthenticatedLayout>
             <Head title="Home" />
-            <div className="hero bg-gray-200 min-h-[250px]">
+            <div className="hero full-width bg-gray-200 min-h-[250px] w-full">
                 <div className="hero-content text-center">
                     <div className="max-w-md">
                         <h1 className="text-5xl font-bold">Hello there</h1>
@@ -33,11 +33,12 @@ export default function Home({
                     </div>
                 </div>
             </div>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 p-8">
+            <div className="list">
                 {products.data.map((product) => (
                     <ProductItem product={product} key={product.id} />
                 ))}
             </div>
+
 
 
         </AuthenticatedLayout>

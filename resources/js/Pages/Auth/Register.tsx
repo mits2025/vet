@@ -100,7 +100,7 @@ export default function Register() {
                             <InputError message={errors.password_confirmation} className="mt-2" />
                         </div>
 
-                        <div className="mt-4 flex items-center justify-end">
+                        <div className="flex items-center justify-between">
                             <Link href={route('login')} className="link">
                                 Already registered?
                             </Link>

@@ -43,7 +43,7 @@ class ProductVariations extends EditRecord
                             ->schema($fields)
                             ->columns(3),
                         TextInput::make('quantity')
-                            ->label('   ')
+                            ->label('Quantity')
                             ->numeric(),
                         TextInput::make('price')
                             ->label('Price')
@@ -131,25 +131,28 @@ class ProductVariations extends EditRecord
     }
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $formdattedData = [];
+        $formattedData = [];
         foreach ($data['variations'] as $option) {
             $variationTypeOptionsIds = [];
-            foreach ($this->record->variationTypes as $i => $variationType) {
+            foreach ($this->record->variationTypes as $variationType) {
+                if (!isset($option['variation_type_' . ($variationType->id)]['id'])) {
+                    continue; // Skip if there's no valid option
+                }
                 $variationTypeOptionsIds[] = $option['variation_type_' . ($variationType->id)]['id'];
             }
-            $quantity = $option['quantity'];
-            $price = $option['price'];
 
-            $formdattedData[] = [
-                'id' => $option['id'],
+            $formattedData[] = [
+                'id' => $option['id'] ?? null, // Ensure 'id' exists
                 'variation_type_option_ids' => $variationTypeOptionsIds,
-                'quantity' => $quantity,
-                'price' => $price,
+                'quantity' => $option['quantity'],
+                'price' => $option['price'],
             ];
         }
-        $data['variations'] = $formdattedData;
+
+        $data['variations'] = $formattedData;
         return $data;
     }
+
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
         $variations = $data['variations'];
