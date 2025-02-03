@@ -32,7 +32,7 @@ export default forwardRef(function TextInput(
             {...props}
             type={type}
             className={
-                'input input-bordered w-full max-w-xs' +
+                'input input-bordered max-w-xs ' +
                 className
             }
             ref={localRef}

@@ -143,6 +143,7 @@
 
 @media (min-width: 520px) {
     .list { grid-template-columns: repeat(3, 1fr); }
+
 }
 
 @media (min-width: 1024px) {
@@ -188,23 +189,27 @@
 /* Sticky Sidebar */
 .aside {
     position: sticky !important;
-    top: 0;
+    top: 80px;
 }
 
-@media (max-width: 800px) {
-        .aside { position: static !important; }
-    .main-container {
-        width: fit-content;
-    }
+
+
+@media (max-width: 1000px) {
+    .aside { position: static !important; }
 }
 
 /* Navbar Adjustments */
-@media (max-width: 768px) {
+@media (max-width: 750px) {
     .navbar { padding: 0.5rem 1rem; }
     .btn-ghost { padding: 0.5rem; }
     .drawer-side { z-index: 10; }
     .input { font-size: 0.875rem; }
     .login { margin-left: 12px; }
     .prodlist { width: 200px; }
+    .main-container {
+        width: fit-content;
+    }
 }
+
+
 

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, usePage } from "@inertiajs/react";
+import {productRoute} from "@/helpers";
 
 function MiniCartDropdown() {
-    const { totalQuantity, totalPrice, cartItems } = usePage().props;
+    const { totalQuantity, totalPrice, miniCartItems} = usePage().props;
 
     // State to manage visibility of the dropdown
     const [isDropdownVisible, setDropdownVisible] = useState(false);
@@ -14,78 +15,81 @@ function MiniCartDropdown() {
 
     return (
         <div className="dropdown dropdown-end">
+            {/* Cart Icon */}
             <div
                 tabIndex={0}
                 role="button"
-                className="btn btn-ghost btn-circle hover:bg-gray-200 transition-all duration-200 ease-in-out rounded-full"
+                className="group p-2 hover:bg-gray-100/80 transition-all duration-200 ease-out rounded-full relative"
                 onClick={toggleDropdown}
             >
                 <div className="indicator">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
+                        className="h-6 w-6 text-gray-700 group-hover:text-gray-900"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
+                        strokeWidth="1.75"
                     >
                         <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                            d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z"
                         />
                     </svg>
-                    <span className="badge badge-sm indicator-item">{totalQuantity}</span>
+                    <span className="absolute -top-1 -right-1 bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm">
+        {totalQuantity}
+      </span>
                 </div>
             </div>
 
-            {/* Conditionally render the dropdown content based on state */}
+            {/* Dropdown Content */}
             {isDropdownVisible && (
                 <div
                     tabIndex={0}
-                    className="minidrop card card-compact dropdown-content bg-white bg-opacity-95 z-[1] mt-3 w-[400px] shadow-xl rounded-lg transition-transform transform duration-200 ease-in-out"
+                    className="dropdown-content shadow-2xl bg-white/95 backdrop-blur-sm z-50 mt-3 w-96 origin-top-right animate-slide-in"
                 >
-                    <div className="card-body p-4">
-                        <span className="text-lg font-bold text-gray-800">
-                            {totalQuantity} Items in Cart
-                        </span>
+                    <div className="p-6 space-y-4">
+                        {/* Header */}
+                        <div className="flex items-center justify-between">
+                            <h3 className="text-xl font-bold text-gray-900">Your Cart</h3>
+                            <span className="text-sm text-gray-500">{totalQuantity} items</span>
+                        </div>
 
-                        <div className={'my-2 max-h-[300px] overflow-y-auto'}>
-                            {cartItems.length === 0 ? (
-                                <div className={'py-2 text-gray-500 text-center'}>
-                                    No Items in Cart.
+                        {/* Items List */}
+                        <div className="divide-y divide-gray-100 max-h-96 overflow-y-auto">
+                            {miniCartItems.length === 0 ? (
+                                <div className="py-6 text-center text-gray-400">
+                                    Your cart is empty
                                 </div>
                             ) : (
-                                cartItems.map((item) => (
+                                miniCartItems.map((item) => (
                                     <Link
-                                        href={route('product.show', item.slug)}
+                                        href={productRoute(item)}
                                         key={item.id}
-                                        className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded-lg transition-all duration-200"
+                                        className="flex items-center gap-4 p-3 hover:bg-gray-50/80 transition-colors duration-150"
                                     >
-                                        {/* Product Image (Smaller) */}
-                                        <div className="w-12 h-12 md:w-16 md:h-16 flex-shrink-0 rounded-md overflow-hidden">
+                                        {/* Product Image */}
+                                        <div className="w-16 h-16 flex-shrink-0 rounded-lg bg-gray-100 overflow-hidden">
                                             <img
                                                 src={item.image}
                                                 alt={item.title}
-                                                className="w-full h-full object-cover"
+                                                className="w-full h-full object-cover object-center"
                                             />
                                         </div>
 
-                                        {/* Title & Quantity (More Compact) */}
+                                        {/* Product Info */}
                                         <div className="flex-1 min-w-0">
-                                            <h3 className="text-sm font-semibold text-gray-700 truncate leading-tight">
-                                                <Link
-                                                    href={route('product.show', item.slug)}
-                                                    className="text-gray-700 hover:text-indigo-600 transition-colors"
-                                                >
-                                                    {item.title}
-                                                </Link>
-                                            </h3>
-                                            <div className="text-xs text-gray-500">Qty: {item.quantity}</div>
+                                            <h4 className="text-base font-medium text-gray-900 truncate">
+                                                {item.title}
+                                            </h4>
+                                            <div className="text-sm text-gray-500 mt-1">
+                                                Qty: {item.quantity}
+                                            </div>
                                         </div>
 
-                                        {/* Price (Smaller & Right-Aligned) */}
-                                        <div className="text-sm font-semibold text-gray-900 text-right">
+                                        {/* Price */}
+                                        <div className="text-base font-semibold text-gray-900">
                                             ₱{(item.price * item.quantity).toLocaleString('en-PH', {
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2
@@ -96,19 +100,23 @@ function MiniCartDropdown() {
                             )}
                         </div>
 
-                        <span className="text-lg font-bold text-green-600 mt-2 block">
-                            Subtotal: ₱{totalPrice.toLocaleString('en-PH', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        })}
-                        </span>
+                        {/* Footer */}
+                        <div className="space-y-4 pt-4">
+                            <div className="flex items-center justify-between border-t border-gray-100 pt-4">
+                                <span className="text-gray-600">Subtotal:</span>
+                                <span className="text-lg font-bold text-gray-900">
+              ₱{totalPrice.toLocaleString('en-PH', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                })}
+            </span>
+                            </div>
 
-                        <div className="card-actions mt-3">
                             <Link
                                 href={route('cart.index')}
-                                className="w-full inline-flex items-center justify-center rounded-md bg-black text-white py-2 text-sm font-semibold uppercase tracking-widest shadow-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-200"
+                                className="block w-full text-center px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white font-medium rounded-lg transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
                             >
-                                View cart
+                                View Cart & Checkout
                             </Link>
                         </div>
                     </div>

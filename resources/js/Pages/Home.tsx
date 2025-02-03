@@ -21,7 +21,7 @@ export default function Home({
     return (
         <AuthenticatedLayout>
             <Head title="Home" />
-            <div className="hero full-width bg-gray-200 min-h-[250px] w-full">
+                <div className="heros mx-0 bg-gray-200 min-h-[250px] w-full place-items-center">
                 <div className="hero-content text-center">
                     <div className="max-w-md">
                         <h1 className="text-5xl font-bold">Hello there</h1>

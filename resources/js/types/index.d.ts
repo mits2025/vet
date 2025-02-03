@@ -63,6 +63,13 @@ export type CartItem = {
     options: VariationTypeOption[]
 }
 
+export type GroupedCartItems = {
+    user: User;
+    items: CartItem[];
+    totalPrice: number;
+    totalQuantity: number;
+}
+
 export type PaginationProps<T> = {
     data: Array<T>
 }
@@ -70,11 +77,12 @@ export type PaginationProps<T> = {
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
+    csrf_token: string;
     auth: {
         user: User;
     };
     ziggy: Config & { location: string };
     totalQuantity: number;
     totalPrice: number;
-    cartItems: CartItem[];
+    miniCartItems: CartItem[];
 };

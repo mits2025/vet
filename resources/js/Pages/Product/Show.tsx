@@ -227,10 +227,10 @@ function Show({product, variationOptions} : {
             <Head title={product.title} />
 
             <div className="mx-auto p-6 lg:p-12 ml-4">
-                <div className="grid gap-10 grid-cols-1 lg:grid-cols-12 items-start sticky">
+                <div className="grid gap-5 grid-cols-1 lg:grid-cols-12 items-start sticky">
 
                     {/* Product Image Carousel - Sticky on Scroll */}
-                    <div className="aside col-span-7">
+                    <div className="aside col-span-6">
                         <div className="bg-gray-100 rounded-2xl align-item-start overflow-hidden">
                             <Carousel images={images} />
                         </div>
@@ -264,7 +264,7 @@ function Show({product, variationOptions} : {
                         {/* Stock Status */}
                         {computedProduct.quantity !== undefined && (
                             <div className={`text-lg font-medium my-4
-                    ${computedProduct.quantity === 0 ? "text-red-600" : "text-black"}`}>
+                    ${computedProduct.quantity === 0 ? "text-red-600" : "text-red-600"}`}>
                                 {computedProduct.quantity === 0 ? (
                                     <span className="bg-gray-100 px-4 py-2 rounded-md">
                            Out of Stock

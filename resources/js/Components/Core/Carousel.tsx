@@ -12,7 +12,7 @@ function Carousel({ images }: { images: Image[] }) {
 
     return (
         <>
-            <div className="flex items-start gap-8">
+            <div className="flex items-start gap-4">
                 {/* Thumbnail Selector */}
                 <div className="flex flex-col items-center gap-2 py-2">
                     {images.map((image) => (
@@ -25,13 +25,13 @@ function Carousel({ images }: { images: Image[] }) {
                                     : 'hover:border-gray-800'
                             }`}
                         >
-                            <img src={image.thumb} alt="" className="w-[70px]" />
+                            <img src={image.thumb} alt="" className="w-full" />
                         </button>
                     ))}
                 </div>
 
                 {/* Display Selected Large Image */}
-                <div className="w-full">
+                <div>
                     {selectedImage && (
                         <img src={selectedImage.large} className="w-full" alt="" />
                     )}

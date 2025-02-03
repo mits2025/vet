@@ -39,6 +39,7 @@ class HandleInertiaRequests extends Middleware
 
         return [
             ...parent::share($request),
+            'csrf_token' => csrf_token(),
             'auth' => [
                 'user' => $request->user(),
             ],
@@ -49,7 +50,7 @@ class HandleInertiaRequests extends Middleware
             'success' => session('success'),
             'totalPrice' => $totalPrice,
             'totalQuantity' => $totalQuantity,
-            'cartItems' => $cartItems,
+            'miniCartItems' => $cartItems,
         ];
     }
 }
