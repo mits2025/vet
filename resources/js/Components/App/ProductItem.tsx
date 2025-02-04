@@ -4,7 +4,7 @@ import {Link} from '@inertiajs/react';
 export default function ProductItem({product}: {product: Product}) {
 
     return (
-        <div className="prodlist card bg-white shadow-lg rounded-lg w-64 overflow-hidden">
+        <div className="card bg-white shadow-md md:shadow-lg rounded-lg w-full overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg">
             <Link href={route('product.show', product.slug)} className="block">
                 <figure className="w-full aspect-square bg-gray-100">
                     <img
@@ -14,17 +14,17 @@ export default function ProductItem({product}: {product: Product}) {
                     />
                 </figure>
             </Link>
-            <div className="p-3 space-y-2">
-                <h2 className="text-sm font-semibold text-gray-800 truncate">
+            <div className="p-2 md:p-3 space-y-1 md:space-y-2">
+                <h2 className="text-xs md:text-sm font-semibold text-gray-800 truncate">
                     {product.title}
                 </h2>
-                <p className="text-xs text-gray-500">
+                <p className="text-[10px] md:text-xs text-gray-500">
                     by <Link href="/" className="text-blue-500 hover:underline">{product.user.name}</Link>&nbsp;
                     in <Link href="/" className="text-blue-500 hover:underline">{product.department.name}</Link>
                 </p>
                 <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold text-gray-800">{product.price}</span>
-                    <button className="bg-black text-white text-xs px-3 py-1 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                    <span className="text-base md:text-lg font-bold text-gray-800">{product.price}</span>
+                    <button className="bg-black text-white text-[10px] md:text-xs px-2 py-1 md:px-3 md:py-1.5 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
                         Add
                     </button>
                 </div>

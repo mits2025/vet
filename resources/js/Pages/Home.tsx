@@ -21,26 +21,36 @@ export default function Home({
     return (
         <AuthenticatedLayout>
             <Head title="Home" />
-                <div className="heros mx-0 bg-gray-200 min-h-[250px] w-full place-items-center">
-                <div className="hero-content text-center">
-                    <div className="max-w-md">
-                        <h1 className="text-5xl font-bold">Hello there</h1>
-                        <p className="py-6">
-                            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-                            quasi. In deleniti eaque aut repudiandae et a id nisi.
+
+            {/* Hero Section */}
+            <section className="relative bg-gradient-to-r from-gray-800 to-gray-900 text-white py-12 md:py-24">
+                <div className="container mx-auto px-4">
+                    <div className="max-w-3xl mx-auto text-center">
+                        <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                            Discover Your Next Favorite Product
+                        </h1>
+                        <p className="text-sm md:text-xl text-gray-300 mb-6 md:mb-8">
+                            Explore our curated collection of premium items. Find exactly what you need with our hand-picked selection of quality products.
                         </p>
-                        <button className="btn bg-black text-white hover:bg-gray-800">Get Started</button>
+                        <button className="btn btn-primary px-6 py-2 md:px-8 md:py-3 text-sm md:text-lg font-semibold rounded-lg transform transition duration-300 hover:scale-105 hover:shadow-xl">
+                            Start Exploring
+                        </button>
                     </div>
                 </div>
-            </div>
-            <div className="list">
-                {products.data.map((product) => (
-                    <ProductItem product={product} key={product.id} />
-                ))}
-            </div>
+            </section>
 
+            {/* Products Grid */}
+            <main className="container px-4 py-8 md:py-12">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+                    {products.data.map((product) => (
+                        <ProductItem
+                            product={product}
+                            key={product.id}
 
-
+                        />
+                    ))}
+                </div>
+            </main>
         </AuthenticatedLayout>
     );
 }
