@@ -38,7 +38,7 @@ function CartItem({ item }: { item: CartItemType }) {
             {/* Product Info */}
             <div className="col-span-3 sm:col-span-3 flex flex-col justify-between space-y-2">
                 <div>
-                    <h3 className="text-base font-semibold text-gray-900 hover:text-blue-600 transition-colors">
+                    <h3 className="text-base font-semibold text-gray-900 hover:text-blue-600 transition-colors turnicate">
                         <Link href={productRoute(item)}>{item.title}</Link>
                     </h3>
                     <div className="mt-1 text-sm text-gray-500 space-y-0.5">

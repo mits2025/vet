@@ -47,7 +47,7 @@ function Index({
                 {/* Main Content Area */}
                 <div className="flex flex-col lg:flex-row gap-6">
                     {/* Cart Items Section - Now takes priority in layout */}
-                    <div className="flex-1">
+                    <div className="flex-1 h-screen ">
                         <div className="card bg-white dark:bg-gray-800 p-4 lg:p-6 shadow-md rounded-lg border border-gray-100 dark:border-gray-700">
                             <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-4 lg:mb-6">
                                 Your Cart Items
@@ -96,8 +96,8 @@ function Index({
                     </div>
 
                     {/* Checkout Summary - Desktop Version */}
-                    <div className="flex flex-col h-screen">
-                    <div className="hidden lg:block w-full lg:w-96 sticky top-20 -mt-40 h-fit">
+                    <div className="flex flex-col">
+                    <div className="hidden lg:block w-full lg:w-96 pb-20 self-start h-screen"        >
                         <div className="card bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-100 dark:border-gray-700 ">
                             <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
                             <div className="flex justify-between items-center mb-6">
@@ -120,7 +120,7 @@ function Index({
                                 <input type="hidden" name="_token" value={csrf_token} />
                                 <PrimaryButton className="w-full rounded-lg bg-primary hover:bg-primary-dark transition duration-300 flex items-center justify-center py-3 text-base">
                                     <CreditCardIcon className="w-5 h-5 mr-2" />
-                                    Secure Checkout
+                                    Secure All Checkout
                                 </PrimaryButton>
                             </form>
                             <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
