@@ -1,56 +1,117 @@
-import React from 'react';
-import {Link, usePage} from "@inertiajs/react";
+import React, { useState, useEffect, useRef } from "react";
+import { Link, usePage } from "@inertiajs/react";
 import MiniCartDropdown from "@/Components/App/MiniCartDropdown";
+import {UserCircleIcon} from "@heroicons/react/24/solid";
 
 function Navbar() {
-    const {auth, totalPrice, totalQuantity}: any = usePage().props;
-    const {user} = auth;
+    const { auth }: any = usePage().props;
+    const { user } = auth;
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+    // Refs for detecting outside clicks
+    const mobileMenuRef = useRef<HTMLDivElement | null>(null);
+    const searchRef = useRef<HTMLDivElement | null>(null);
+
+    // Close menu/search when clicking outside
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+                setIsMobileMenuOpen(false);
+            }
+            if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+                setIsSearchOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
     return (
-        <div className="navbar bg-base-100 shadow-md md:shadow-lg z-10 relative">
-
-        <div className="flex-1">
-                <a href="/" className="btn btn-ghost text-xl">LOOKALE</a>
+        <div className="navbar bg-base-100 shadow-md md:shadow-lg sticky top-0 z-50">
+            {/* Left section - Logo */}
+            <div className="flex-1">
+                <a href="/" className="btn btn-ghost px-2 text-xl md:text-2xl font-bold text-primary">
+                    LOOKALE
+                </a>
             </div>
-            <div className="form-control flex justify-center items-center w-full">
-                <input
-                    type="text"
-                    placeholder="Search"
-                    className="input input-bordered w-full max-w-2xl" // Adjust the max-w-2xl for a longer search bar
-                />
-            </div>
-            <div className="flex-none gap-3">
 
-                {user && <div className="dropdown dropdown-end">
-                    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                        <div className="w-10 rounded-full">
-                            <img
-                                alt="Tailwind CSS Navbar component"
-                                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+            {/* Mobile menu toggle */}
+            <div className="flex-none md:hidden">
+                <div className="flex items-center gap-1">
+                    {/* Mobile search toggle */}
+                    <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="btn btn-ghost btn-circle">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
+
+                    {/* Hamburger menu */}
+                    <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="btn btn-ghost btn-circle">
+                            <UserCircleIcon  className="h-10 w-10 -mt-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"/>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </button>
+                </div>
+            </div>
+
+            {/* Desktop middle section - Search bar */}
+            <div className="hidden md:flex flex-1 max-w-2xl mx-4">
+                <div className="form-control w-full">
+                    <input
+                        type="text"
+                        placeholder="Search products..."
+                        className="input input-bordered w-full bg-base-200 focus:bg-white focus:ring-2 focus:ring-primary"
+                    />
+                </div>
+            </div>
+
+            {/* Desktop right section - Navigation items */}
+            <div className="hidden md:flex flex-none gap-4 items-center">
+                {user ? (
+                    <div className="dropdown dropdown-end">
+                        <div tabIndex={0} role="button" className="avatar placeholder">
+                            <UserCircleIcon  className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"/>
                         </div>
+                        <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 mt-4">
+                            <li><Link href={route('profile.edit')}>Profile</Link></li>
+                            <li><Link href={route('logout')} method="post">Logout</Link></li>
+                        </ul>
                     </div>
-                    <ul
-                        tabIndex={0}
-                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                        <li>
-                            <Link href={route('profile.edit')} className="justify-between">
-                                Profile
-                            </Link>
-
-                        </li>
-                        <li>
-                            <Link href={route('logout')} method={"post"} as="button">
-                                Logout
-                            </Link>
-                        </li>
-                    </ul>
-                </div> }
-                {!user && <>
-                    <Link href={route('login')} className={"login ml-2 inline-flex items-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-800 transition duration-150 ease-in-out hover:bg-gray-300 focus:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-gray-400"}>Login</Link>
-                    <Link href={route('register')} className={"register inline-flex items-center rounded-md border border-transparent bg-black px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-800 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-gray-900 dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300 "}>Sign UP</Link>
-
-                </>}
+                ) : (
+                    <div className="flex gap-2">
+                        <Link href={route('login')} className="btn btn-outline px-6">Login</Link>
+                        <Link href={route('register')} className="btn btn-primary px-6 text-white">Sign Up</Link>
+                    </div>
+                )}
             </div>
+
+            {/* Mobile search input */}
+            {isSearchOpen && (
+                <div ref={searchRef} className="absolute top-full left-0 right-0 bg-base-100 p-4 shadow-lg md:hidden">
+                    <input
+                        type="text"
+                        placeholder="Search products..."
+                        className="input input-bordered w-full bg-base-200"
+                    />
+                </div>
+            )}
+
+            {/* Mobile menu content */}
+            {isMobileMenuOpen && (
+                <div ref={mobileMenuRef} className="absolute top-full left-0 right-0 bg-base-100 shadow-lg md:hidden flex flex-col p-4 gap-2">
+                    {user ? (
+                        <>
+                            <Link href={route('profile.edit')} className="btn btn-ghost justify-start">Profile</Link>
+                            <Link href={route('logout')} method="post" className="btn btn-ghost justify-start text-error">Logout</Link>
+                        </>
+                    ) : (
+                        <>
+                            <Link href={route('login')} className="btn btn-ghost justify-start">Login</Link>
+                            <Link href={route('register')} className="btn btn-ghost justify-start text-primary">Sign Up</Link>
+                        </>
+                    )}
+                </div>
+            )}
             <MiniCartDropdown/>
         </div>
 
@@ -58,3 +119,4 @@ function Navbar() {
 }
 
 export default Navbar;
+
