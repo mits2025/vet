@@ -61,151 +61,82 @@
     color: #4156e2;
 }
 
-/* Layout and Containers */
-.full-width {
-    width: 100vw;
-    max-width: 100%;
-}
+    /* Carousel */
+    .carousel {
+        display: flex;
+        overflow: hidden;
+        position: relative;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .carousel-item {
+        flex: none;
+        width: 100%;
+        scroll-snap-align: start;
+        position: relative;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .carousel img {
+        object-fit: cover;
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+    }
+
+
+    .thumbnail {
+        width: 60px;
+        border-radius: 6px;
+        object-fit: cover;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .thumbnail:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+
+    .product-item img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
 
 
 .container {
-    display: flex;
-}
-
-/* Carousel */
-.carousel {
-    display: flex;
-    overflow: hidden;
-    position: relative;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.carousel-item {
-    flex: none;
     width: 100%;
-    scroll-snap-align: start;
-    position: relative;
-    transition: transform 0.3s ease-in-out;
 }
 
-.carousel img {
-    object-fit: cover;
-    width: 100%;
-    height: auto;
-    border-radius: 12px;
-}
-
-/* Thumbnails */
-.flex-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.thumbnail {
-    width: 60px;
-    border-radius: 6px;
-    object-fit: cover;
-    transition: box-shadow 0.3s ease;
-}
-
-.thumbnail:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Product Grid */
-.list {
-    display: grid;
-    gap: 16px;
-    padding: 16px;
-}
-
-.product-item img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-}
-.list {
-    grid-template-columns: repeat(2, 1fr);
-}
-.navbar {
-    position: sticky !important;
-    top: 0;
-}
-
-/* Responsive Grid */
-@media (min-width: 520px) {
-    .list { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (min-width: 520px) {
-    .list { grid-template-columns: repeat(3, 1fr); }
-
-}
-
-@media (min-width: 1024px) {
-    .list { grid-template-columns: repeat(4, 1fr); }
-}
-
-@media (min-width: 1280px) {
-    .list { grid-template-columns: repeat(5, 1fr); }
-}
-
-/* Product Details */
-.text-xl { font-size: 1.25rem; font-weight: 700; color: #334155; }
-.text-2xl { font-size: 1.75rem; font-weight: 700; }
-.text-3xl { font-size: 2rem; font-weight: 600; color: #1e293b; }
-.text-error { color: #dc2626; font-weight: bold; }
-
-.mb-8 { margin-bottom: 2rem; }
-.my-4 { margin: 1rem 0; }
-.font-semibold { font-weight: 600; }
-
-/* Dropdown Select */
-.select-container {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    position: relative;
-}
-
-.select-container .select {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-}
-
-.select-container .select:focus {
-    border-color: #3b82f6;
-    outline: none;
-}
-
-/* Sticky Sidebar */
-.aside {
-    position: sticky !important;
-    top: 80px;
-}
+    .navbar {
+        position: sticky !important;
+        top: 0;
+    }
 
 
 
-@media (max-width: 1000px) {
-    .aside { position: static !important; }
-}
+    /* Sticky Sidebar */
+    .aside {
+        position: sticky !important;
+        top: 80px;
+    }
 
-/* Navbar Adjustments */
-@media (max-width: 750px) {
-    .navbar { padding: 0.5rem 1rem; }
-    .btn-ghost { padding: 0.5rem; }
-    .drawer-side { z-index: 10; }
-    .input { font-size: 0.875rem; }
-    .login { margin-left: 12px; }
-}
+
+
+    @media (max-width: 1000px) {
+        .aside { position: static !important; }
+    }
+
+    /* Navbar Adjustments */
+    @media (max-width: 750px) {
+        .navbar { padding: 0.5rem 1rem; }
+        .btn-ghost { padding: 0.5rem; }
+        .drawer-side { z-index: 10; }
+        .input { font-size: 0.875rem; }
+       }
 
 
 

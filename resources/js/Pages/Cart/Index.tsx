@@ -21,6 +21,7 @@ function Index({
                 <div className="lg:hidden card bg-white dark:bg-gray-800 w-full p-6 shadow-md rounded-lg border border-gray-100 dark:border-gray-700">
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="text-lg font-semibold">Order Summary</h3>
+                        <span className="text-gray-600 dark:text-gray-300">Subtotal ({totalQuantity} items)</span>
                     </div>
                     <div className="space-y-4 mb-6">
                         <div className="flex justify-between text-sm">
@@ -39,7 +40,7 @@ function Index({
                         <input type="hidden" name="_token" value={csrf_token} />
                         <PrimaryButton className="w-full rounded-lg bg-primary hover:bg-primary-dark transition duration-300 flex items-center justify-center py-3 text-sm">
                             <CreditCardIcon className="w-5 h-5 mr-2" />
-                            Checkout Now
+                            Checkout All Now
                         </PrimaryButton>
                     </form>
                 </div>
@@ -97,7 +98,7 @@ function Index({
 
                     {/* Checkout Summary - Desktop Version */}
                     <div className="flex flex-col">
-                    <div className="hidden lg:block w-full lg:w-96 pb-20 self-start h-screen"        >
+                    <div className="aside hidden lg:block w-full lg:w-96 pb-20 self-start">
                         <div className="card bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-100 dark:border-gray-700 ">
                             <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
                             <div className="flex justify-between items-center mb-6">

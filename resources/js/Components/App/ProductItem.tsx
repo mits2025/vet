@@ -1,7 +1,27 @@
 import {Product} from '@/types';
-import {Link} from '@inertiajs/react';
+import {Link, useForm} from '@inertiajs/react';
 
 export default function ProductItem({product}: {product: Product}) {
+
+    const form = useForm<{
+        option_ids: Record<string, number>;
+        quantity: number;
+
+    }>({
+        option_ids: {},
+        quantity: 1,
+
+    })
+
+    const addToCart = () => {
+        form.post(route('cart.store', product.id), {
+            preserveScroll: true,
+            preserveState: true,
+            onError: (err) => {
+                console.log(err)
+            }
+        })
+    }
 
     return (
         <div className="card bg-white shadow-md md:shadow-lg rounded-lg w-full overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg">
@@ -24,8 +44,8 @@ export default function ProductItem({product}: {product: Product}) {
                 </p>
                 <div className="flex items-center justify-between">
                     <span className="text-base md:text-lg font-bold text-gray-800">{product.price}</span>
-                    <button className="bg-black text-white text-[10px] md:text-xs px-2 py-1 md:px-3 md:py-1.5 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
-                        Add
+                    <button onClick={addToCart} className="bg-black text-white text-[10px] md:text-xs px-2 py-1 md:px-3 md:py-1.5 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                        Add To Cart
                     </button>
                 </div>
             </div>

@@ -11,6 +11,7 @@ function Show({product, variationOptions} : {
     product: Product, variationOptions: number[]
 }) {
         console.log(product, variationOptions);
+
     const form = useForm<{
         option_ids: Record<string, number>;
         quantity: number;
@@ -186,7 +187,7 @@ function Show({product, variationOptions} : {
             }),
             option: (provided: any, state: any) => ({
                 ...provided,
-                backgroundColor: state.isSelected ? '#4CAF50' : 'white', // Tailwind's 'bg-green-600'
+                backgroundColor: state.isSelected ? 'darkblue' : 'white', // Tailwind's 'bg-green-600'
                 color: state.isSelected ? 'white' : 'black',
                 '&:hover': { backgroundColor: '#E5E7EB' }, // Tailwind's 'bg-gray-200'
             }),
@@ -213,7 +214,7 @@ function Show({product, variationOptions} : {
                 />
                 <button
                     onClick={addToCart}
-                    className="btn inline-flex items-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className="btn text-white rounded-lg bg-primary hover:bg-black   transition duration-300 flex items-center justify-center py-3 text-base"
                 >
                     Add to Cart
                 </button>
@@ -226,54 +227,53 @@ function Show({product, variationOptions} : {
         <AuthenticatedLayout>
             <Head title={product.title} />
 
-            <div className="mx-auto p-6 lg:p-12 ml-4">
-                <div className="grid gap-5 grid-cols-1 lg:grid-cols-12 items-start sticky">
+            <div className="max-w-6xl mx-auto p-6 lg:p-12">
+                <div className="grid gap-8 grid-cols-1 lg:grid-cols-12 items-start">
 
-                    {/* Product Image Carousel - Sticky on Scroll */}
-                    <div className="aside col-span-6">
-                        <div className="bg-gray-100 rounded-2xl align-item-start overflow-hidden">
+                    {/* Product Image Carousel */}
+                    <div className="aside col-span-6 sticky top-6">
+                        <div className="bg-gray-100 rounded-2xl overflow-hidden shadow-md">
                             <Carousel images={images} />
                         </div>
                     </div>
 
                     {/* Product Info */}
-                    <div className="col-span-5 space-y-4 ml-4">
-                        <h1 className="text-3xl font-bold text-gray-900 w-full">{product.title}</h1>
+                    <div className="col-span-6 space-y-6">
+                        <h1 className="text-3xl font-extrabold text-gray-900">{product.title}</h1>
 
-                        {/* Price */}
-                        <div className="pt-6 border-t text-4xl font-semibold text-gray-900">
+                        {/* Price Display */}
+                        <div className="border-t pt-4 text-gray-900">
                             {(() => {
                                 const formattedPrice = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(computedProduct.price);
-                                const pesoSign = formattedPrice.charAt(0);  // Extract ₱ sign
-                                const priceNumber = formattedPrice.substring(1); // Extract the number part
+                                const pesoSign = formattedPrice.charAt(0);
+                                const priceNumber = formattedPrice.substring(1);
 
                                 return (
-                                    <>
-                                        <span className="text-2xl align-bottom">{pesoSign}</span>
+                                    <div className="text-4xl font-semibold flex items-baseline">
+                                        <span className="text-2xl">{pesoSign}</span>
                                         {priceNumber}
-                                    </>
+                                    </div>
                                 );
                             })()}
                         </div>
-
-
 
                         {/* Variations */}
                         {renderProductVariationTypes()}
 
                         {/* Stock Status */}
                         {computedProduct.quantity !== undefined && (
-                            <div className={`text-lg font-medium my-4
-                    ${computedProduct.quantity === 0 ? "text-red-600" : "text-red-600"}`}>
+                            <div className="my-4 text-lg font-medium">
                                 {computedProduct.quantity === 0 ? (
-                                    <span className="bg-gray-100 px-4 py-2 rounded-md">
-                           Out of Stock
-                        </span>
+                                    <span className="text-red-700 px-4 py-2 rounded-md">
+                                Out of Stock
+                            </span>
                                 ) : computedProduct.quantity < 20 ? (
-                                    <span className="bg-gray-100 px-4 py-2 rounded-md">
-                            Only {computedProduct.quantity} left!
-                        </span>
-                                ) : null}
+                                    <span className="text-yellow-700 px-4 py-2 rounded-md">
+                                Only {computedProduct.quantity} left!
+                            </span>
+                                ) : (
+                                    <span className="text-green-600">In Stock</span>
+                                )}
                             </div>
                         )}
 
@@ -282,17 +282,17 @@ function Show({product, variationOptions} : {
 
                         {/* About the Item */}
                         <div className="pt-6 border-t border-gray-300">
-                            <b className="text-xl block mb-2 text-gray-800">About The Item</b>
+                            <b className="text-xl text-gray-800">About The Item</b>
                             <div
-                                className="wysiwyg-output text-gray-700 leading-relaxed"
+                                className="wysiwyg-output text-gray-700 leading-relaxed mt-2"
                                 dangerouslySetInnerHTML={{ __html: product.description }}
                             />
                         </div>
                     </div>
                 </div>
             </div>
-
         </AuthenticatedLayout>
+
     );
 }
 
