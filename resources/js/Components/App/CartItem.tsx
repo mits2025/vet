@@ -4,7 +4,10 @@ import { CartItem as CartItemType } from "@/types";
 import TextInput from "@/Components/Core/TextInput";
 import { productRoute } from "@/helpers";
 
-function CartItem({ item }: { item: CartItemType }) {
+function CartItem({ item, isSelected, onToggle }: {
+    item: CartItemType
+    isSelected: boolean;
+    onToggle: () => void;}) {
     const deleteForm = useForm({ option_ids: item.option_ids });
     const [error, setError] = useState("");
 
@@ -22,8 +25,16 @@ function CartItem({ item }: { item: CartItemType }) {
     };
 
     return (
-        <div className="grid grid-cols-5 gap-4 p-2 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 lg:m-5">
-            {/* Product Image */}
+        <div
+            className={`grid grid-cols-5 gap-4 p-2 bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.02] active:scale-95 lg:m-5 cursor-pointer border-2
+        ${isSelected
+                ? 'border-primary bg-blue-50 dark:bg-blue-900 shadow-md'
+                : 'border-transparent hover:border-gray-300 dark:hover:border-gray-500'}
+    `}
+            onClick={onToggle}
+        >
+
+        {/* Product Image */}
             <Link
                 href={productRoute(item)}
                 className="mt-3 col-span-2 sm:col-span-1 relative aspect-square rounded-lg overflow-hidden bg-gray-100"
@@ -60,7 +71,7 @@ function CartItem({ item }: { item: CartItemType }) {
                             min="1"
                             defaultValue={item.quantity}
                             onBlur={handleQuantityChange}
-                            className={`w-12 h-10 px-3 py-1.5 text-center border-2 rounded-lg focus:border-blue-500 ${
+                            className={`w-12 h-8 px-3 py-1.5 text-center border-2 rounded-lg focus:border-blue-500 ${
                                 error ? "border-red-500" : "border-gray-200"
                             }`}
                         />
@@ -74,7 +85,7 @@ function CartItem({ item }: { item: CartItemType }) {
             {/* Action Buttons */}
             <div className="col-span-5 sm:col-span-1 flex sm:flex-col items-center justify-end gap-2 sm:gap-3 lg:mr-9 lg:mb-5">
                 <button
-                    onClick={() => onDeleteClick()}
+                    onClick={(e) => {e.stopPropagation();onDeleteClick()}}
                     className="flex items-center gap-1 text-red-600 hover:text-red-700 px-3 py-1.5 text-sm font-medium rounded-md transition-colors"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

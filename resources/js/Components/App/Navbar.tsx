@@ -86,7 +86,7 @@ function Navbar() {
 
             {/* Mobile search input */}
             {isSearchOpen && (
-                <div ref={searchRef} className="absolute top-full left-0 right-0 bg-base-100 p-4 shadow-lg md:hidden">
+                <div ref={searchRef} className="absolute top-full left-0 right-0  p-4 shadow-lg md:hidden">
                     <input
                         type="text"
                         placeholder="Search products..."

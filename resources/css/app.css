@@ -117,6 +117,10 @@
     object-fit: cover;
 }
 
+.transition-all {
+    transition: all 0.2s ease;
+}
+
 .navbar {
     position: sticky !important;
     top: 0;

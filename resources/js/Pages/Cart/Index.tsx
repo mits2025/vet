@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { PageProps, GroupedCartItems } from "@/types";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
@@ -13,6 +13,27 @@ function Index({
                    totalQuantity,
                    totalPrice
                }: PageProps<{ cartItems: Record<number, GroupedCartItems> }>) {
+    const [selectedItemIds, setSelectedItemIds] = useState<number[]>([]);
+    const toggleItem = (itemId: number) => {
+        setSelectedItemIds(prev =>
+            prev.includes(itemId)
+                ? prev.filter(id => id !== itemId)
+                : [...prev, itemId]
+        );
+    };
+    const { selectedTotal, selectedQuantity } = useMemo(() => {
+        let total = 0;
+        let quantity = 0;
+        Object.values(cartItems).forEach(group => {
+            group.items.forEach(item => {
+                if (selectedItemIds.includes(item.id)) {
+                    total += item.price * item.quantity;
+                    quantity += item.quantity;
+                }
+            });
+        });
+        return { selectedTotal: total, selectedQuantity: quantity };
+    }, [cartItems, selectedItemIds]);
     return (
         <AuthenticatedLayout>
             <Head title="Your Cart" />
@@ -22,7 +43,7 @@ function Index({
                 <div className="lg:hidden card bg-white dark:bg-gray-800 w-full p-6 shadow-md rounded-lg border border-gray-100 dark:border-gray-700">
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="text-lg font-semibold">Order Summary</h3>
-                        <span className="text-gray-600 dark:text-gray-300">Subtotal ({totalQuantity} items)</span>
+                        <span className="text-gray-600 dark:text-gray-300">Subtotal ({selectedQuantity} items)</span>
                     </div>
                     <div className="space-y-4 mb-6">
                         <div className="flex justify-between text-sm">
@@ -35,13 +56,13 @@ function Index({
                         </div>
                     </div>
                     <div className="text-xl font-bold text-primary mb-4">
-                        ₱{totalPrice.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        ₱{selectedTotal.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </div>
                     <form action={route('cart.checkout')} method="post">
                         <input type="hidden" name="_token" value={csrf_token} />
                         <PrimaryButton className="w-full rounded-lg bg-primary hover:bg-primary-dark transition duration-300 flex items-center justify-center py-3 text-sm">
                             <CreditCardIcon className="w-5 h-5 mr-2" />
-                            Checkout All Now
+                            Checkout Now
                         </PrimaryButton>
                     </form>
                 </div>
@@ -52,7 +73,7 @@ function Index({
                     <div className="flex-1 h-screen ">
                         <div className="card bg-white dark:bg-gray-800 p-4 lg:p-6 shadow-md rounded-lg border border-gray-100 dark:border-gray-700">
                             <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-4 lg:mb-6">
-                                Your Cart Items
+                                Pick For Checkout
                             </h2>
                             <div className="space-y-6">
                                 {Object.keys(cartItems).length === 0 ? (
@@ -87,7 +108,12 @@ function Index({
                                             {/* Cart Items */}
                                             <div className="space-y-4">
                                                 {cartItem.items.map((item) => (
-                                                    <CartItem item={item} key={item.id} />
+                                                    <CartItem
+                                                        item={item}
+                                                        key={item.id}
+                                                        isSelected={selectedItemIds.includes(item.id)}
+                                                        onToggle={() => toggleItem(item.id)}
+                                                    />
                                                 ))}
                                             </div>
                                         </div>
@@ -103,9 +129,9 @@ function Index({
                         <div className="card bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-100 dark:border-gray-700 ">
                             <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
                             <div className="flex justify-between items-center mb-6">
-                                <span className="text-gray-600 dark:text-gray-300">Subtotal ({totalQuantity} items)</span>
+                                <span className="text-gray-600 dark:text-gray-300">Subtotal ({selectedQuantity} items)</span>
                                 <span className="text-lg font-bold text-primary">
-                            ₱{totalPrice.toLocaleString('en-PH', { minimumFractionDigits: 2 })}
+                            ₱{selectedTotal.toLocaleString('en-PH', { minimumFractionDigits: 2 })}
                         </span>
                             </div>
                             <div className="space-y-4 mb-6">
@@ -122,7 +148,7 @@ function Index({
                                 <input type="hidden" name="_token" value={csrf_token} />
                                 <PrimaryButton className="w-full rounded-lg bg-primary hover:bg-primary-dark transition duration-300 flex items-center justify-center py-3 text-base">
                                     <CreditCardIcon className="w-5 h-5 mr-2" />
-                                    Secure All Checkout
+                                    Secure Checkout
                                 </PrimaryButton>
                             </form>
                             <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">

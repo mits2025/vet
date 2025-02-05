@@ -44,9 +44,6 @@ export default function ProductItem({product}: {product: Product}) {
                 </p>
                 <div className="flex items-center justify-between">
                     <span className="text-base md:text-lg font-bold text-gray-800">{product.price}</span>
-                    <button onClick={addToCart} className="bg-black text-white text-[10px] md:text-xs px-2 py-1 md:px-3 md:py-1.5 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
-                        Add To Cart
-                    </button>
                 </div>
             </div>
         </div>
