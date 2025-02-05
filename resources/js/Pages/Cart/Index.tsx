@@ -17,7 +17,7 @@ function Index({
         <AuthenticatedLayout>
             <Head title="Your Cart" />
             <div className="container mx-auto">
-            <div className="p-4 lg:p-8 flex flex-col gap-6">
+            <div className="p-4 lg:p-8 flex flex-col gap-6 lg:mr-9 lg:ml-9">
                 {/* Checkout Summary - Top on mobile, Sticky sidebar on desktop */}
                 <div className="lg:hidden card bg-white dark:bg-gray-800 w-full p-6 shadow-md rounded-lg border border-gray-100 dark:border-gray-700">
                     <div className="flex justify-between items-center mb-4">

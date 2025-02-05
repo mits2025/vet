@@ -22,7 +22,7 @@ function CartItem({ item }: { item: CartItemType }) {
     };
 
     return (
-        <div className="grid grid-cols-5 gap-4 p-2 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
+        <div className="grid grid-cols-5 gap-4 p-2 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 lg:m-5">
             {/* Product Image */}
             <Link
                 href={productRoute(item)}
@@ -60,7 +60,7 @@ function CartItem({ item }: { item: CartItemType }) {
                             min="1"
                             defaultValue={item.quantity}
                             onBlur={handleQuantityChange}
-                            className={`w-14 h-10 px-3 py-1.5 text-center border-2 rounded-lg focus:border-blue-500 ${
+                            className={`w-12 h-10 px-3 py-1.5 text-center border-2 rounded-lg focus:border-blue-500 ${
                                 error ? "border-red-500" : "border-gray-200"
                             }`}
                         />
@@ -72,7 +72,7 @@ function CartItem({ item }: { item: CartItemType }) {
             </div>
 
             {/* Action Buttons */}
-            <div className="col-span-5 sm:col-span-1 flex sm:flex-col items-center justify-end gap-2 sm:gap-3 mb-8">
+            <div className="col-span-5 sm:col-span-1 flex sm:flex-col items-center justify-end gap-2 sm:gap-3 lg:mr-9 lg:mb-5">
                 <button
                     onClick={() => onDeleteClick()}
                     className="flex items-center gap-1 text-red-600 hover:text-red-700 px-3 py-1.5 text-sm font-medium rounded-md transition-colors"
@@ -86,7 +86,7 @@ function CartItem({ item }: { item: CartItemType }) {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
                     </svg>
-                    <span className="sm:sr-only">Save for Later</span>
+                    <span className="sm:sr-only">Save</span>
                 </button>
             </div>
 
@@ -104,4 +104,3 @@ function CartItem({ item }: { item: CartItemType }) {
 }
 
 export default CartItem;
-

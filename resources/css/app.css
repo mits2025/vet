@@ -124,14 +124,6 @@
 
 
 /* Product Details */
-.text-xl { font-size: 1.25rem; font-weight: 700; color: #334155; }
-.text-2xl { font-size: 1.75rem; font-weight: 700; }
-.text-3xl { font-size: 2rem; font-weight: 600; color: #1e293b; }
-.text-error { color: #dc2626; font-weight: bold; }
-
-.mb-8 { margin-bottom: 2rem; }
-.my-4 { margin: 1rem 0; }
-.font-semibold { font-weight: 600; }
 
 
 /* Sticky Sidebar */
