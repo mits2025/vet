@@ -5,7 +5,7 @@ import { Head, Link } from "@inertiajs/react";
 import PrimaryButton from "@/Components/Core/PrimaryButton";
 import {CreditCardIcon, ShoppingCartIcon} from "@heroicons/react/16/solid";
 import CartItem from "@/Components/App/CartItem";
-import {LockClosedIcon, UserCircleIcon} from "@heroicons/react/24/solid";
+import {LockClosedIcon, ShoppingBagIcon, UserCircleIcon} from "@heroicons/react/24/solid";
 
 function Index({
                    csrf_token,
@@ -72,9 +72,12 @@ function Index({
                     {/* Cart Items Section - Now takes priority in layout */}
                     <div className="flex-1 h-screen ">
                         <div className="card bg-white dark:bg-gray-800 p-4 lg:p-6 shadow-md rounded-lg border border-gray-100 dark:border-gray-700">
-                            <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-4 lg:mb-6">
-                                Pick For Checkout
-                            </h2>
+                            <div className="flex items-center space-x-2">
+                                <ShoppingBagIcon className="w-6 h-6 mb-6" />
+                                <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-4 lg:mb-6">
+                                    Pick For Checkout
+                                </h2>
+                            </div>
                             <div className="space-y-6">
                                 {Object.keys(cartItems).length === 0 ? (
                                     <div className="py-8 text-center text-gray-500 dark:text-gray-300">
