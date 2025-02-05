@@ -24,7 +24,7 @@ export default function ProductItem({product}: {product: Product}) {
     }
 
     return (
-        <div className="card bg-white shadow-md md:shadow-lg rounded-lg w-full overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg">
+        <Link href={route('product.show', product.slug)} className="card bg-white shadow-md md:shadow-lg rounded-lg w-full overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg">
             <Link href={route('product.show', product.slug)} className="block">
                 <figure className="w-full aspect-square bg-gray-100">
                     <img
@@ -46,7 +46,7 @@ export default function ProductItem({product}: {product: Product}) {
                     <span className="text-base md:text-lg font-bold text-gray-800">{product.price}</span>
                 </div>
             </div>
-        </div>
+        </Link>
 
     )
 }
