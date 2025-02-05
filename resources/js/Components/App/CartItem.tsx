@@ -22,11 +22,11 @@ function CartItem({ item }: { item: CartItemType }) {
     };
 
     return (
-        <div className="grid grid-cols-5 gap-4 p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
+        <div className="grid grid-cols-5 gap-4 p-2 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
             {/* Product Image */}
             <Link
                 href={productRoute(item)}
-                className="col-span-2 sm:col-span-1 relative aspect-square rounded-lg overflow-hidden bg-gray-100"
+                className="mt-3 col-span-2 sm:col-span-1 relative aspect-square rounded-lg overflow-hidden bg-gray-100"
             >
                 <img
                     src={item.image}
@@ -36,7 +36,7 @@ function CartItem({ item }: { item: CartItemType }) {
             </Link>
 
             {/* Product Info */}
-            <div className="col-span-3 sm:col-span-3 flex flex-col justify-between space-y-2">
+            <div className="mt-4 col-span-3 sm:col-span-3 flex flex-col justify-between space-y-2">
                 <div>
                     <h3 className="text-base font-semibold text-gray-900 hover:text-blue-600 transition-colors turnicate">
                         <Link href={productRoute(item)}>{item.title}</Link>
@@ -72,9 +72,9 @@ function CartItem({ item }: { item: CartItemType }) {
             </div>
 
             {/* Action Buttons */}
-            <div className="col-span-5 sm:col-span-1 flex sm:flex-col items-center justify-end gap-2 sm:gap-3">
+            <div className="col-span-5 sm:col-span-1 flex sm:flex-col items-center justify-end gap-2 sm:gap-3 mb-8">
                 <button
-                    onClick={onDeleteClick}
+                    onClick={() => onDeleteClick()}
                     className="flex items-center gap-1 text-red-600 hover:text-red-700 px-3 py-1.5 text-sm font-medium rounded-md transition-colors"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -86,13 +86,13 @@ function CartItem({ item }: { item: CartItemType }) {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
                     </svg>
-                    <span className="sm:sr-only">Save Later</span>
+                    <span className="sm:sr-only">Save for Later</span>
                 </button>
             </div>
 
             {/* Price */}
-            <div className="col-span-5 sm:col-span-1 flex items-center justify-end">
-                <div className="text-lg font-bold text-gray-900">
+            <div className="col-span-5 sm:col-span-4 flex items-center justify-end -mt-6">
+                <div className="p-2 text-lg font-bold text-gray-900">
                     ₱{(item.price * item.quantity).toLocaleString("en-PH", {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,

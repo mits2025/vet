@@ -36,22 +36,19 @@ class CartController extends Controller
         $cartService->addItemToCart(
             $product,
             $data['quantity'],
-            $data['option_ids']
+            $data['option_ids'] ?: []
         );
 
         return back()->with('success', 'Product added to cart successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
 
     public function update(Request $request, Product $product, CartService $cartService)
     {
         $request->validate([
             'quantity' => ['integer', 'min:1'],
         ]);
-        $optionIds = $request->input('option_ids');
+        $optionIds = $request->input('option_ids') ?: [];
         $quantity = $request->input('quantity');
 
         $cartService->updateItemQuantity($product->id, $quantity, $optionIds);
@@ -59,10 +56,6 @@ class CartController extends Controller
         return back()->with('success', 'Product updated successfully!');
 
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Request $request, Product $product, CartService $cartService)
     {
         $optionIds = $request->input('option_ids');
@@ -71,6 +64,7 @@ class CartController extends Controller
 
         return back()->with('success', 'Product removed from cart!');
     }
+
     public function checkout()
     {
 

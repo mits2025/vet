@@ -16,7 +16,8 @@ function Index({
     return (
         <AuthenticatedLayout>
             <Head title="Your Cart" />
-            <div className="container mx-auto p-4 lg:p-8 flex flex-col gap-6">
+            <div className="container mx-auto">
+            <div className="p-4 lg:p-8 flex flex-col gap-6">
                 {/* Checkout Summary - Top on mobile, Sticky sidebar on desktop */}
                 <div className="lg:hidden card bg-white dark:bg-gray-800 w-full p-6 shadow-md rounded-lg border border-gray-100 dark:border-gray-700">
                     <div className="flex justify-between items-center mb-4">
@@ -132,6 +133,7 @@ function Index({
                     </div>
                     </div>
                 </div>
+            </div>
             </div>
         </AuthenticatedLayout>
     );

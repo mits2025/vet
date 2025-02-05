@@ -79,7 +79,7 @@ export default function Login({
                                     type="email"
                                     name="email"
                                     value={data.email}
-                                    className="mt-1 block w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 shadow-sm transition duration-200"
+                                    className="mt-1 block full-width rounded-lg border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 shadow-sm transition duration-200"
                                     autoComplete="email"
                                     isFocused={true}
                                     onChange={(e) => setData('email', e.target.value)}
@@ -94,7 +94,7 @@ export default function Login({
                                     type="password"
                                     name="password"
                                     value={data.password}
-                                    className="mt-1 block w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 shadow-sm transition duration-200"
+                                    className="mt-1 block full-width rounded-lg border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 shadow-sm transition duration-200"
                                     autoComplete="current-password"
                                     onChange={(e) => setData('password', e.target.value)}
                                 />
