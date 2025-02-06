@@ -1,30 +1,24 @@
-import {Product} from '@/types';
-import {Link, useForm} from '@inertiajs/react';
+import { Product } from '@/types';
+import { Link, useForm } from '@inertiajs/react';
 
-export default function ProductItem({product}: {product: Product}) {
-
-    const form = useForm<{
-        option_ids: Record<string, number>;
-        quantity: number;
-
-    }>({
+export default function ProductItem({ product }: { product: Product }) {
+    const form = useForm<{ option_ids: Record<string, number>; quantity: number }>({
         option_ids: {},
         quantity: 1,
-
-    })
+    });
 
     const addToCart = () => {
         form.post(route('cart.store', product.id), {
             preserveScroll: true,
             preserveState: true,
             onError: (err) => {
-                console.log(err)
-            }
-        })
-    }
+                console.log(err);
+            },
+        });
+    };
 
     return (
-        <Link href={route('product.show', product.slug)} className="card bg-white shadow-md md:shadow-lg rounded-lg w-full overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg">
+        <div className="card bg-white shadow-md md:shadow-lg rounded-lg w-full overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg">
             <Link href={route('product.show', product.slug)} className="block">
                 <figure className="w-full aspect-square bg-gray-100">
                     <img
@@ -33,7 +27,6 @@ export default function ProductItem({product}: {product: Product}) {
                         className="w-full h-full object-cover transition-transform duration-200 hover:scale-105"
                     />
                 </figure>
-            </Link>
             <div className="p-2 md:p-3 space-y-1 md:space-y-2">
                 <h2 className="text-xs md:text-sm font-semibold text-gray-800 truncate">
                     {product.title}
@@ -46,7 +39,7 @@ export default function ProductItem({product}: {product: Product}) {
                     <span className="text-base md:text-lg font-bold text-gray-800">{product.price}</span>
                 </div>
             </div>
-        </Link>
-
-    )
+            </Link>
+        </div>
+    );
 }

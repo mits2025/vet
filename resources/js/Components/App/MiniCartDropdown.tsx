@@ -15,7 +15,7 @@ function MiniCartDropdown() {
     };
 
     return (
-        <div className="dropdown dropdown-end">
+        <div className="dropdown dropdown-end ml-1">
             {/* Cart Icon */}
             <div
                 tabIndex={0}
@@ -40,7 +40,7 @@ function MiniCartDropdown() {
             {isDropdownVisible && (
                 <div
                     tabIndex={0}
-                    className="dropdown-content shadow-2xl bg-white/95 z-50 mt-3 w-80 md:w-96 origin-top-right md:-mr-2 animate-slide-in"
+                    className="dropdown-content shadow-2xl bg-white/95 z-50 mt-3 w-80 md:w-96 origin-top-right md:-mr-2 lg:-mr-1 animate-slide-in"
                 >
                     <div className="p-4 md:p-6 space-y-4">
                         {/* Header */}

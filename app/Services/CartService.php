@@ -19,17 +19,18 @@ class CartService
     private ?array $cachedCartItems = null;
     protected const COOKIE_NAME = 'cartItems';
     protected const COOKIE_LIFETIME = 60 * 24 * 365;
-    public function addItemToCart(Product $product, int $quantity = 1, $optionIds = null)
+    public function addItemToCart(Product $product, int $quantity = 1, array $optionIds = [])
     {
-        if ($optionIds === null) {
+        if (empty($optionIds)) {
             $optionIds = $product->variationTypes
                 ->mapWithKeys(fn(VariationType $type) => [$type->id => $type->options[0]?->id])
                 ->toArray();
         }
+
         $price = $product->getPriceForOptions($optionIds);
 
         if (Auth::check()) {
-            $this->saveItemToDatabase($product->id, $quantity, $price, $optionIds);
+            $this->saveItemToDatabase($product->id, $quantity, $optionIds, $price);
         } else {
             $this->saveItemToCookies($product->id, $quantity, $price, $optionIds);
         }
@@ -256,7 +257,7 @@ class CartService
     {
         $userId = Auth::id();
 
-        $cartItems = CartItem::where('úser_id', $userId)
+        $cartItems = CartItem::where('user_id', $userId)
             ->get()
             ->map(function ($cartItem) {
                 return [
@@ -272,10 +273,11 @@ class CartService
     }
     protected function getCartItemsFromCookies()
     {
-        $cartItems = json_decode(Cookie::get(self::COOKIE_NAME), '[]');
+        $cartItems = json_decode(Cookie::get(self::COOKIE_NAME, '[]'), true);
 
-        return $cartItems;
+        return is_array($cartItems) ? $cartItems : [];
     }
+
     public function getCartItemsGrouped(): array
     {
         $cartItems = $this->getCartItems();

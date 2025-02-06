@@ -50,7 +50,7 @@ function CartItem({ item, isSelected, onToggle }: {
             <div className="mt-4 col-span-3 sm:col-span-3 flex flex-col justify-between space-y-2">
                 <div>
                     <h3 className="text-base font-semibold text-gray-900 hover:text-blue-600 transition-colors turnicate">
-                        <Link href={productRoute(item)}>{item.title}</Link>
+                        {item.title}
                     </h3>
                     <div className="mt-1 text-sm text-gray-500 space-y-0.5">
                         {item.options.map((option) => (
@@ -83,7 +83,7 @@ function CartItem({ item, isSelected, onToggle }: {
             </div>
 
             {/* Action Buttons */}
-            <div className="col-span-5 sm:col-span-1 flex sm:flex-col items-center justify-end gap-2 sm:gap-3 lg:mr-9 lg:mb-5">
+            <div className="col-span-4 lg:col-span-1 sm:col-span-1 flex sm:flex-col items-center justify-end gap-2 sm:gap-3 lg:mr-9 lg:mb-5">
                 <button
                     onClick={(e) => {e.stopPropagation();onDeleteClick()}}
                     className="flex items-center gap-1 text-red-600 hover:text-red-700 px-3 py-1.5 text-sm font-medium rounded-md transition-colors"
