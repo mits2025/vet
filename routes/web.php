@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::middleware(['verified'])->group(function () {
-        Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+        Route::match(['get', 'post'], '/cart/summary', [CartController::class, 'summary'])->name('cart.summary');
     });
 });
 

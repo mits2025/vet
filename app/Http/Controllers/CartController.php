@@ -65,6 +65,43 @@ class CartController extends Controller
         return back()->with('success', 'Product removed from cart!');
     }
 
+    public function summary(Request $request, CartService $cartService)
+    {
+        if ($request->isMethod('post')) {
+            $selectedIds = explode(',', $request->input('selected_ids', ''));
+            $selectedItems = $cartService->getCartItemsSelected($selectedIds);
+            $request->session()->put('cart_summary', $selectedItems);
+            return redirect()->route('cart.summary');
+        }
+
+        $selectedItems = $request->session()->get('cart_summary', []);
+        $groupedItems = $this->groupSelectedItems($selectedItems);
+        $overallTotalPrice = array_sum(array_column($groupedItems, 'totalPrice'));
+        dd($selectedItems, $groupedItems, $overallTotalPrice);
+
+        return Inertia::render('Cart/Summary', [
+            'cartItems' => $groupedItems,
+        ]);
+    }
+
+    private function groupSelectedItems(array $items): array
+    {
+        return collect($items)
+            ->groupBy('user.id')
+            ->map(function ($items, $userId) {
+                $user = $items->first()['user'];
+                return [
+                    'user' => $user,
+                    'items' => $items->toArray(),
+                    'totalQuantity' => $items->sum('quantity'),
+                    'totalPrice' => $items->sum(fn ($item) => $item['price'] * $item['quantity']),
+                ];
+
+            })
+            ->toArray();
+    }
+
+
     public function checkout()
     {
 

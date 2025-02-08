@@ -105,7 +105,7 @@ class CartService
                     }
 
                     $cartItemData[] = [
-                        'id' => $cartItem['id'],
+                        'id' => (string)$cartItem['id'],
                         'product_id' => $product->id,
                         'title' => $product->title,
                         'slug' => $product->slug,
@@ -212,7 +212,7 @@ class CartService
             $cartItems[$itemKey]['price'] = $price;
         } else {
             $cartItems[$itemKey] = [
-                'id' => Str::uuid(),
+                'id' => (string)Str::uuid(),
                 'product_id' => $productId,
                 'quantity' => $quantity,
                 'price' => $price,
@@ -319,5 +319,16 @@ class CartService
             }
         }
         Cookie::queue(self::COOKIE_NAME, '', -1);
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getCartItemsSelected(array $selectedIds)
+    {
+        $allItems = $this->getCartItems();
+        return array_filter($allItems, function ($item) use ($selectedIds) {
+            return in_array($item['id'], $selectedIds);
+        });
     }
 }

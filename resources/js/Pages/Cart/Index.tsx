@@ -13,20 +13,21 @@ function Index({
                    totalQuantity,
                    totalPrice
                }: PageProps<{ cartItems: Record<number, GroupedCartItems> }>) {
-    const [selectedItemIds, setSelectedItemIds] = useState<number[]>([]);
-    const toggleItem = (itemId: number) => {
+    const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
+    const toggleItem = (itemId: string) => {
         setSelectedItemIds(prev =>
             prev.includes(itemId)
                 ? prev.filter(id => id !== itemId)
                 : [...prev, itemId]
         );
     };
+
     const { selectedTotal, selectedQuantity } = useMemo(() => {
         let total = 0;
         let quantity = 0;
         Object.values(cartItems).forEach(group => {
             group.items.forEach(item => {
-                if (selectedItemIds.includes(item.id)) {
+                if (selectedItemIds.includes(item.id.toString())) {
                     total += item.price * item.quantity;
                     quantity += item.quantity;
                 }
@@ -58,7 +59,7 @@ function Index({
                     <div className="text-xl font-bold text-primary mb-4">
                         ₱{selectedTotal.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </div>
-                    <form action={route('cart.checkout')} method="post">
+                    <form action={route('cart.summary')} method="post">
                         <input type="hidden" name="_token" value={csrf_token} />
                         <PrimaryButton className="w-full rounded-lg bg-primary hover:bg-primary-dark transition duration-300 flex items-center justify-center py-3 text-sm">
                             <CreditCardIcon className="w-5 h-5 mr-2" />
@@ -98,7 +99,7 @@ function Index({
                                                         {cartItem.user.name}
                                                     </Link>
                                                 </div>
-                                                <form action={route('cart.checkout')} method="post" className="w-full sm:w-auto">
+                                                <form action={route('cart.summary')} method="post" className="w-full sm:w-auto">
                                                     <input type="hidden" name="_token" value={csrf_token} />
                                                     <input type="hidden" name="vendor_id" value={cartItem.user.id} />
                                                     <button className="w-full sm:w-auto bg-gray-300 btn btn-outline-primary text-sm py-1.5 px-4 flex items-center justify-center gap-2">
@@ -114,8 +115,8 @@ function Index({
                                                     <CartItem
                                                         item={item}
                                                         key={item.id}
-                                                        isSelected={selectedItemIds.includes(item.id)}
-                                                        onToggle={() => toggleItem(item.id)}
+                                                        isSelected={selectedItemIds.includes(item.id.toString())}
+                                                        onToggle={() => toggleItem(item.id.toString())}
                                                     />
                                                 ))}
                                             </div>
@@ -147,8 +148,9 @@ function Index({
                                     <span className="text-gray-600 dark:text-gray-300">₱0.00</span>
                                 </div>
                             </div>
-                            <form action={route('cart.checkout')} method="post">
+                            <form action={route('cart.summary')} method="post">
                                 <input type="hidden" name="_token" value={csrf_token} />
+                                <input type="hidden" name="selected_ids" value={selectedItemIds.join(',')} />
                                 <PrimaryButton className="w-full rounded-lg bg-primary hover:bg-primary-dark transition duration-300 flex items-center justify-center py-3 text-base">
                                     <CreditCardIcon className="w-5 h-5 mr-2" />
                                     Secure Checkout

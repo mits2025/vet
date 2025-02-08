@@ -45,9 +45,10 @@ class ProductResource extends Resource
                 Forms\Components\Grid::make()
                     ->schema([
                         TextInput::make('title')
-                            ->label('Product') // Change the display name to "Product"
+                            ->label('Product')
                             ->live(onBlur: true)
                             ->required()
+                            ->unique(table: Product::class, column: 'title', ignoreRecord: true)
                             ->afterStateUpdated(function (string $operation, $state, callable $set) {
                                 $set('slug', Str::slug($state));
                             }),
