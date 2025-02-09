@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 
 
@@ -28,6 +29,22 @@ class CartService
         }
 
         $price = $product->getPriceForOptions($optionIds);
+
+        // Check if the added quantity exceeds the available stock
+        $existingQuantity = 0;
+        foreach ($this->getCartItems() as $item) {
+            if ($item['product_id'] == $product->id && $item['option_ids'] == $optionIds) {
+                $existingQuantity += $item['quantity'];
+            }
+        }
+
+        $newTotal = $existingQuantity + $quantity;
+
+        if ($newTotal > $product->quantity) {
+            throw ValidationException::withMessages([
+                'quantity' => 'The quantity exceeds the available stock.'
+            ]);
+        }
 
         if (Auth::check()) {
             $this->saveItemToDatabase($product->id, $quantity, $optionIds, $price);
@@ -293,33 +310,36 @@ class CartService
             ])
             ->toArray();
     }
-    public function  moveCartItemsToDatabase($userId): void
+    public function moveCartItemsToDatabase($userId): void
     {
         $cartItems = $this->getCartItemsFromCookies();
 
         foreach ($cartItems as $itemKey => $cartItem) {
+            // Check if the item already exists in the database
             $existingItem = CartItem::where('user_id', $userId)
                 ->where('product_id', $cartItem['product_id'])
                 ->where('variation_type_option_ids', json_encode($cartItem['option_ids']))
                 ->first();
 
+            // If the item already exists, skip moving it to the database
             if ($existingItem) {
-                $existingItem->update([
-                    'quantity' => $existingItem->quantity + $cartItem['quantity'],
-                    'price' => $cartItem['price'],
-                ]);
-            } else {
-                CartItem::create([
-                    'user_id' => $userId,
-                    'product_id' => $cartItem['product_id'],
-                    'quantity' => $cartItem['quantity'],
-                    'price' => $cartItem['price'],
-                    'variation_type_option_ids' => $cartItem['option_ids'],
-                ]);
+                continue;  // Skip this iteration and move to the next cart item
             }
+
+            // If the item does not exist, create a new cart item in the database
+            CartItem::create([
+                'user_id' => $userId,
+                'product_id' => $cartItem['product_id'],
+                'quantity' => $cartItem['quantity'],
+                'price' => $cartItem['price'],
+                'variation_type_option_ids' => $cartItem['option_ids'],
+            ]);
         }
+
+        // Clear the cart items from the cookies after moving to the database
         Cookie::queue(self::COOKIE_NAME, '', -1);
     }
+
 
     /**
      * @return array|null

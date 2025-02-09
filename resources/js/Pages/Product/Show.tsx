@@ -113,15 +113,20 @@ function Show({product, variationOptions} : {
             form.setData('quantity', newValue.value);
         }
     }
+    const [quantityError, setQuantityError] = useState('');
+
     const addToCart = () => {
         form.post(route('cart.store', product.id), {
             preserveScroll: true,
             preserveState: true,
-            onError: (err) => {
-                console.log(err)
+            onError: (errors) => {
+                setQuantityError(errors.quantity || '');
+            },
+            onSuccess: () => {
+                setQuantityError('');
             }
-        })
-    }
+        });
+    };
     const renderProductVariationTypes = () => {
         return (
             product.variationTypes.map((type, i) => (
@@ -175,6 +180,7 @@ function Show({product, variationOptions} : {
         form.setData('option_ids', idsMap);
     }, [selectedOptions]);
 
+
     const renderAddToCartButton = () => {
         // Custom styles for react-select component
         const customStyles = {
@@ -203,22 +209,31 @@ function Show({product, variationOptions} : {
         };
 
         return (
-            <div className="mb-8 flex gap-4">
-                <Select
-                    onChange={onQuantityChange}
-                    value={options.find(option => option.value === form.data.quantity) || null}
-                    options={options}
-                    styles={customStyles}
-                    className="w-full"
-                    placeholder="Select Quantity"
-                />
-                <button
-                    onClick={addToCart}
-                    className="btn text-white rounded-lg bg-primary hover:bg-black   transition duration-300 flex items-center justify-center py-3 text-base"
-                >
-                    Add to Cart
-                </button>
+            <div className="mb-8 flex flex-col gap-4">
+                <div className="flex gap-4">
+                    <Select
+                        onChange={onQuantityChange}
+                        value={options.find(option => option.value === form.data.quantity) || null}
+                        options={options}
+                        styles={customStyles}
+                        className="w-full"
+                        placeholder="Select Quantity"
+                    />
+                    <button
+                        onClick={addToCart}
+                        className="btn text-white rounded-lg bg-primary hover:bg-black transition duration-300 flex items-center justify-center py-3 text-base"
+                    >
+                        Add to Cart
+                    </button>
+                </div>
+
+                {/* Error message appears below */}
+                {quantityError && (
+                    <div className="text-red-500 text-sm">{quantityError}</div>
+                )}
             </div>
+
+
         );
     };
 

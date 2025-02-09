@@ -31,11 +31,10 @@ export default forwardRef(function TextInput(
         <input
             {...props}
             type={type}
-            className={
-                'input input-bordered max-w-xs ' +
-                className
-            }
             ref={localRef}
+            className={
+                'text-input max-w-xs w-full  ' + className
+            }
         />
     );
 });

@@ -58,7 +58,7 @@ export default function Register() {
                         <form onSubmit={submit} className="space-y-5">
                             {/* Name Field */}
                             <div>
-                                <InputLabel htmlFor="name" value="Full Name" className="text-sm font-medium text-gray-700" />
+                                <InputLabel htmlFor="name" value="User Name" className="text-sm font-medium text-gray-700" />
                                 <TextInput
                                     id="name"
                                     name="name"

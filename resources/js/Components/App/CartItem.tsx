@@ -1,29 +1,43 @@
 import React, { useState } from "react";
 import { Link, router, useForm } from "@inertiajs/react";
-import { CartItem as CartItemType } from "@/types";
+import {CartItem as CartItemType, Product} from "@/types";
 import TextInput from "@/Components/Core/TextInput";
 import { productRoute } from "@/helpers";
 
-function CartItem({ item, isSelected, onToggle, readonly = false }: {
+function CartItem({ item, product, isSelected, onToggle, readonly = false }: {
     item: CartItemType
+    product: Product
     isSelected: boolean;
     onToggle?: () => void;
     readonly?: boolean;}) {
     const deleteForm = useForm({ option_ids: item.option_ids });
     const [error, setError] = useState("");
+    const [quantity, setQuantity] = useState(item.quantity);
+
 
     const onDeleteClick = () => {
         deleteForm.delete(route("cart.destroy", item.product_id), { preserveScroll: true });
     };
 
     const handleQuantityChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+        const newQuantity = parseInt(ev.target.value, 10);
+
         setError("");
+        setQuantity(newQuantity); // Update the input immediately
+
         router.put(
             route("cart.update", item.product_id),
-            { quantity: ev.target.value, option_ids: item.option_ids },
-            { preserveScroll: true, onError: (errors) => setError(Object.values(errors)[0]) }
+            { quantity: newQuantity, option_ids: item.option_ids },
+            {
+                preserveScroll: true,
+                onError: (errors) => {
+                    setError(Object.values(errors)[0]);
+                    setQuantity(item.quantity); // Revert on error
+                }
+            }
         );
     };
+
 
     return (
         <div
@@ -70,14 +84,16 @@ function CartItem({ item, isSelected, onToggle, readonly = false }: {
                         <TextInput
                             type="number"
                             min="1"
-                            defaultValue={item.quantity}
-                            onBlur={handleQuantityChange}
-                            className={`w-12 h-8 px-3 py-1.5 text-center border-2 rounded-lg focus:border-blue-500 ${
+                            value={quantity} // Bind state
+                            onChange={(e) => setQuantity(Number(e.target.value))} // Allow typing
+                            onBlur={handleQuantityChange} // Handle validation
+                            className={`w-12 h-8 text-center border-2 rounded-lg focus:border-blue-500 ${
                                 error ? "border-red-500" : "border-gray-200"
                             }`}
                         />
+
                         {error && (
-                            <p className="absolute -bottom-5 left-0 text-xs text-red-500">{error}</p>
+                            <p className="absolute lg:left-12 lg:-bottom-5 sm:-bottom-9 text-xs text-center text-red-500">{error}</p>
                         )}
                     </div>
                 </div>

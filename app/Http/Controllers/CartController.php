@@ -48,14 +48,20 @@ class CartController extends Controller
         $request->validate([
             'quantity' => ['integer', 'min:1'],
         ]);
-        $optionIds = $request->input('option_ids') ?: [];
+
+        $availableStock = $product->quantity; // Get available stock
         $quantity = $request->input('quantity');
 
+        if ($quantity > $availableStock) {
+            return back()->withErrors(['quantity' => "Only {$availableStock} in stock!"]);
+        }
+
+        $optionIds = $request->input('option_ids') ?: [];
         $cartService->updateItemQuantity($product->id, $quantity, $optionIds);
 
         return back()->with('success', 'Product updated successfully!');
-
     }
+
     public function destroy(Request $request, Product $product, CartService $cartService)
     {
         $optionIds = $request->input('option_ids');
