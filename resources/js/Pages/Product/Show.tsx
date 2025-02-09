@@ -108,11 +108,6 @@ function Show({product, variationOptions} : {
          return newOptions
      })
     }
-    const onQuantityChange = (newValue: SingleValue<{ value: number; label: string }>) => {
-        if (newValue) {
-            form.setData('quantity', newValue.value);
-        }
-    }
     const [quantityError, setQuantityError] = useState('');
 
     const addToCart = () => {
