@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Link, router, useForm } from "@inertiajs/react";
-import {CartItem as CartItemType, Product} from "@/types";
+import {CartItem as CartItemType} from "@/types";
 import TextInput from "@/Components/Core/TextInput";
 import { productRoute } from "@/helpers";
 
-function CartItem({ item, product, isSelected, onToggle, readonly = false }: {
+function CartItem({ item, isSelected, onToggle, readonly = false }: {
     item: CartItemType
-    product: Product
     isSelected: boolean;
     onToggle?: () => void;
     readonly?: boolean;}) {

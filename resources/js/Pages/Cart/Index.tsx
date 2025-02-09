@@ -9,9 +9,7 @@ import {LockClosedIcon, ShoppingBagIcon, UserCircleIcon} from "@heroicons/react/
 
 function Index({
                    csrf_token,
-                   cartItems,
-                   totalQuantity,
-                   totalPrice
+                   cartItems
                }: PageProps<{ cartItems: Record<number, GroupedCartItems> }>) {
     const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
     const toggleItem = (itemId: string) => {
