@@ -98,14 +98,14 @@ function Index({
                                                         {cartItem.user.name}
                                                     </Link>
                                                 </div>
-                                                <form action={route('cart.summary')} method="post" className="w-full sm:w-auto">
+                                                <div className="w-full sm:w-auto">
                                                     <input type="hidden" name="_token" value={csrf_token} />
                                                     <input type="hidden" name="vendor_id" value={cartItem.user.id} />
                                                     <button className="w-full sm:w-auto bg-gray-300 btn btn-outline-primary text-sm py-1.5 px-4 flex items-center justify-center gap-2">
                                                         <CreditCardIcon className="w-4 h-4" />
                                                         <span>Checkout For This Seller</span>
                                                     </button>
-                                                </form>
+                                                </div>
                                             </div>
 
                                             {/* Cart Items */}
