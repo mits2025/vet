@@ -60,6 +60,89 @@
     background-color: #eaf4ff;
     color: #4156e2;
 }
+/* Base styles for modern text input */
+.text-input {
+    width: 100%;
+    padding: 12px 12px;                  /* Comfortable padding */
+    border: 2px solid #d1d5db;           /* Subtle border color */
+    border-radius: 8px;                  /* Rounded corners */
+    font-size: 16px;                     /* Comfortable text size */
+    color: #333;                         /* Text color */
+    background-color: #f9fafb;           /* Soft background */
+    transition: all 0.3s ease;           /* Smooth transition for focus and hover effects */
+    text-transform: capitalize;          /* Capitalize the first letter of each word */
+}
+
+/* On hover: */
+.text-input:hover {
+    border-color: #4A90E2;               /* Change border color */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Soft shadow on hover */
+}
+
+/* On focus: */
+.text-input:focus {
+    outline: none;                       /* Remove the default outline */
+    border-color: #4A90E2;               /* Blue border on focus */
+    box-shadow: 0 0 8px rgba(0, 140, 255, 0.2); /* Subtle glow effect */
+}
+
+/* Placeholder styling */
+.text-input::placeholder {
+    color: #9ca3af; /* Light placeholder text */
+    opacity: 1;      /* Ensure full opacity for better visibility */
+}
+
+/* Optional: Disabled state */
+.text-input:disabled {
+    background-color: #e5e7eb; /* Light gray for disabled state */
+    border-color: #d1d5db;      /* Match border color */
+    cursor: not-allowed;        /* Show that input is disabled */
+}
+
+.custom-phone-input {
+    max-width: 20rem; /* Adjust the width as needed */
+}
+
+.custom-phone-input input {
+    width: 100%;                     /* Make sure the input takes full width of the container */
+    padding: 12px 16px;              /* Comfortable padding inside the input */
+    border: 2px solid #d1d5db;       /* Light gray border */
+    border-radius: 8px;              /* Rounded corners */
+    background-color: #f9fafb;       /* Light background color */
+    font-size: 16px;                 /* Comfortable text size */
+    color: #333;                     /* Text color */
+    transition: all 0.3s ease;       /* Smooth transition for hover/focus effects */
+}
+
+/* Hover effect */
+.custom-phone-input input:hover {
+    border-color: #4A90E2;           /* Border color change on hover */
+    box-shadow: 0 0 5px rgba(0, 140, 255, 0.2); /* Soft shadow on hover */
+}
+
+/* Focus effect */
+.custom-phone-input input:focus {
+    outline: none;                   /* Remove the default outline */
+    border-color: #4A90E2;           /* Border color on focus */
+    box-shadow: 0 0 8px rgba(0, 140, 255, 0.2); /* Soft glowing effect */
+}
+
+/* Placeholder styling */
+.custom-phone-input input::placeholder {
+    color: #9ca3af;                  /* Light gray color for placeholder text */
+    opacity: 1;                       /* Make placeholder text visible */
+}
+
+/* Disabled state styling */
+.custom-phone-input input:disabled {
+    background-color: #e5e7eb;       /* Light gray for disabled state */
+    border-color: #d1d5db;           /* Match the border color */
+    cursor: not-allowed;             /* Show a "not-allowed" cursor */
+}
+
+
+
+
 
 /* Layout and Containers */
 .full-width {
