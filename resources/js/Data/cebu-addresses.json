@@ -1,0 +1,20 @@
+{
+    "Cebu": {
+        "municipalities": {
+            "Cebu City": {
+                "barangays": {
+                    "Adlaon": "6000",
+                    "Agsungot": "6000",
+                    "Apas": "6000"
+                }
+            },
+            "Mandaue City": {
+                "barangays": {
+                    "Alang-alang": "6014",
+                    "Bakilid": "6014",
+                    "Banilad": "6014"
+                }
+            }
+        }
+    }
+}

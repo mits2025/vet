@@ -6,17 +6,82 @@ import {useForm} from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import PhoneInput from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
+import { useEffect, useState } from 'react';
+import cebuAddresses from '@/Data/cebu-addresses.json';
+import Select from "react-select";  // Correctly imported JSON
+
+
 export default function UpdateCustomerForm({ customer, className = '' }: { customer?: any; className?: string }) {
+    const [municipalities, setMunicipalities] = useState<string[]>([]);
+    const [barangays, setBarangays] = useState<string[]>([]);
+
     const { data, setData, post, processing, errors } = useForm({
         name: customer?.name || '',
         email: customer?.email || '',
         phone: customer?.phone || '',
+        state: 'Cebu', // Fixed value
         street: customer?.street || '',
-        city: customer?.city || '',
-        state: customer?.state || '',
+        municipality: customer?.municipality || '',
+        barangays: customer?.barangays || '',
         postal_code: customer?.postal_code || '',
-        country: customer?.country || '',
+        country: 'Philippines', // Fixed value
     });
+
+    useEffect(() => {
+        // Load municipalities
+        const cebuMunicipalities = Object.keys(cebuAddresses.Cebu.municipalities);
+        setMunicipalities(cebuMunicipalities);
+
+        // Set initial barangays if editing
+        if (customer?.municipality) {
+            const initialBarangays = Object.keys(
+                cebuAddresses.Cebu.municipalities[customer.municipality].barangays
+            );
+            setBarangays(initialBarangays);
+        }
+    }, []);
+
+    const municipalityOptions = municipalities.map((municipality) => ({
+        value: municipality,
+        label: municipality,
+    }));
+
+    const handleMunicipalityChange = (selectedOption: { value: string; label: string } | null) => {
+        const selectedMunicipality = selectedOption ? selectedOption.value : "";
+
+        setData("municipality", selectedMunicipality);
+
+        // Reset barangay and postal code when municipality changes
+        setData("barangays", "");
+        setData("postal_code", "");
+
+        if (selectedMunicipality) {
+            // Load barangays for the selected municipality
+            const municipalityData = cebuAddresses.Cebu.municipalities[selectedMunicipality];
+            setBarangays(Object.keys(municipalityData.barangays));
+        } else {
+            setBarangays([]); // Reset barangays if no municipality is selected
+        }
+    };
+
+    const barangayOptions = barangays.map((barangay) => ({
+        value: barangay,
+        label: barangay,
+    }));
+
+    const handleBarangayChange = (selectedOption: { value: string; label: string } | null) => {
+        const selectedBarangay = selectedOption ? selectedOption.value : "";
+
+        setData("barangays", selectedBarangay);
+
+        // Set postal code automatically
+        if (selectedBarangay && data.municipality) {
+            const postalCode = cebuAddresses.Cebu.municipalities[data.municipality].barangays[selectedBarangay];
+            setData("postal_code", postalCode);
+        } else {
+            setData("postal_code", "");
+        }
+    };
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -82,12 +147,25 @@ export default function UpdateCustomerForm({ customer, className = '' }: { custo
                     <InputError className="mt-2" message={errors.phone} />
                 </div>
 
+                {/* State Field */}
+                <div>
+                    <InputLabel htmlFor="state" value="State/Province" />
+                    <TextInput
+                        id="state"
+                        className="mt-1 block w-full"
+                        value="Cebu"
+                        readOnly
+                        onChange={(e) => setData('state', 'Cebu')}
+                    />
+                    <InputError className="mt-2" message={errors.state} />
+                </div>
+
                 {/* Street Field */}
                 <div>
                     <InputLabel htmlFor="street" value="Street" />
                     <TextInput
                         id="street"
-                        className="mt-1 block w-full"
+                        className="custom-phone-input mt-1 block"
                         value={data.street}
                         onChange={(e) => setData('street', e.target.value)}
                         required
@@ -96,30 +174,39 @@ export default function UpdateCustomerForm({ customer, className = '' }: { custo
                     <InputError className="mt-2" message={errors.street} />
                 </div>
 
-                {/* City Field */}
+                {/* Municipality Field */}
                 <div>
-                    <InputLabel htmlFor="city" value="City" />
-                    <TextInput
-                        id="city"
-                        className="mt-1 block w-full"
-                        value={data.city}
-                        onChange={(e) => setData('city', e.target.value)}
-                        required
+                    <InputLabel htmlFor="municipality" value="Municipality/City" />
+                    <Select
+                        id="municipality"
+                        className="custom-phone-input w-full"
+                        classNamePrefix="react-select"
+                        options={municipalityOptions}
+                        value={municipalityOptions.find((option) => option.value === data.municipality) || null}
+                        onChange={handleMunicipalityChange}  // ✅ Fixed onChange function
+                        placeholder="Select Municipality/City"
+                        isClearable
+                        isSearchable
                     />
-                    <InputError className="mt-2" message={errors.city} />
+                    <InputError className="mt-2" message={errors.municipality} />
                 </div>
 
-                {/* State Field */}
+                {/* Barangays Field */}
                 <div>
-                    <InputLabel htmlFor="state" value="State/Province" />
-                    <TextInput
-                        id="state"
-                        className="mt-1 block w-full"
-                        value={data.state}
-                        onChange={(e) => setData('state', e.target.value)}
-                        required
+                    <InputLabel htmlFor="barangays" value="Barangay" />
+                    <Select
+                        id="barangays"
+                        className="custom-phone-input w-full"
+                        classNamePrefix="react-select"
+                        options={barangayOptions}
+                        value={barangayOptions.find((option) => option.value === data.barangays) || null}
+                        onChange={handleBarangayChange} // ✅ React-friendly event handler
+                        placeholder="Select Barangay"
+                        isClearable
+                        isSearchable
+                        isDisabled={!barangays.length} // Disable if no barangays available
                     />
-                    <InputError className="mt-2" message={errors.state} />
+                    <InputError className="mt-2" message={errors.barangays} />
                 </div>
 
                 {/* Postal Code Field */}

@@ -14,9 +14,10 @@ class CustomerController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:customers,email,' . Auth::id(),
             'phone' => 'required|string|max:20',
-            'street' => 'nullable|string|max:255',
-            'city' => 'required|string|max:255',
             'state' => 'required|string|max:255',
+            'street' => 'nullable|string|max:255',
+            'municipality' => 'required|string|max:255',
+            'barangays' => 'required|string|max:255',
             'postal_code' => 'required|string|max:10',
             'country' => 'required|string|max:255',
         ]);

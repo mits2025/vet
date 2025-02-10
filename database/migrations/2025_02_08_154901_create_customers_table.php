@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone');
             $table->string('street')->nullable();
-            $table->string('city');
+            $table->string('municipality');
+            $table->string('barangays');
             $table->string('state');
             $table->string('postal_code');
             $table->string('country');

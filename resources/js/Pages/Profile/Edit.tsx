@@ -7,9 +7,9 @@ import UpdateProfileInformationForm from './Partials/UpdateProfileInformationFor
 import UpdateCustomerForm from './Partials/UpdateCustomerForm';
 
 export default function Edit({
+                                 customer,
                                  mustVerifyEmail,
                                  status,
-                                 customer,
                              }: PageProps<{ mustVerifyEmail: boolean; status?: string; customer?: any }>) {
     return (
         <AuthenticatedLayout>
