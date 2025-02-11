@@ -5,6 +5,8 @@ import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 import UpdateCustomerForm from './Partials/UpdateCustomerForm';
+import BecomeVendorForm from './Partials/VendorRequestForm';
+
 
 export default function Edit({
                                  customer,
@@ -24,6 +26,11 @@ export default function Edit({
                     <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
                         <UpdateCustomerForm customer={customer} />
                     </div>
+
+                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
+                        <BecomeVendorForm />
+                    </div>
+
 
                     <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
                         <UpdateProfileInformationForm mustVerifyEmail={mustVerifyEmail} status={status} />

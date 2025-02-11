@@ -20,18 +20,15 @@ class Product extends Model implements HasMedia
     {
         $this->addMediaConversion('thumb')
             ->width(100)
-            ->height(100)
-            ->fit('crop', 100, 100); // Ensures a square crop
+            ->height(100);
 
         $this->addMediaConversion('small')
             ->width(480)
-            ->height(480)
-            ->fit('crop', 480, 480); // Ensures a square crop
+            ->height(480);
 
         $this->addMediaConversion('large')
             ->width(1200)
-            ->height(1200)
-            ->fit('crop', 1200, 1200); // Ensures a square crop
+            ->height(1200);
     }
 
 

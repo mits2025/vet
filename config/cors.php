@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'paths' => ['*'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
     'allowed_methods' => ['*'],
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['https://vet.test'],
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],

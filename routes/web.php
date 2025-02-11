@@ -4,6 +4,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
 // ========================
@@ -34,6 +35,11 @@ Route::middleware('auth')->group(function () {
 
     // Customer (Shipping Information) Update
     Route::post('/customer/update', [CustomerController::class, 'update'])->name('customer.update');
+
+    // User Becoming a Vendor Request
+    Route::post('/vendor/request', [VendorController::class, 'requestVendor'])
+        ->name('vendor.request')
+        ->middleware('auth');
 
     // Verified Routes
     Route::middleware(['verified'])->group(function () {
