@@ -10,6 +10,10 @@ class Vendor extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'user_id'; // Tells Eloquent that 'user_id' is the primary key
+    public $incrementing = false; // Because 'user_id' is not auto-incrementing
+    protected $keyType = 'string'; // If 'user_id' is not an integer (optional)
+
     protected $fillable = [
         'user_id',
         'status',
