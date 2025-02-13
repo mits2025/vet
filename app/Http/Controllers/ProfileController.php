@@ -19,6 +19,7 @@ class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         return Inertia::render('Profile/Edit', [
+            'vendor' => $request->user()->vendor, // ✅ Pass vendor data
             'customer' => optional(Auth::user())->customer, // Safe way to access customer
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
