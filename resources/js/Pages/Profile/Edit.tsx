@@ -5,14 +5,15 @@ import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 import UpdateCustomerForm from './Partials/UpdateCustomerForm';
-import BecomeVendorForm from './Partials/VendorRequestForm';
+import VendorRequestForm from "./Partials/VendorRequestForm";
 
 
 export default function Edit({
                                  customer,
+                                 vendor,
                                  mustVerifyEmail,
                                  status,
-                             }: PageProps<{ mustVerifyEmail: boolean; status?: string; customer?: any }>) {
+                             }: PageProps<{ mustVerifyEmail: boolean; status?: string; customer?: any; vendor?: any}>) {
     return (
         <AuthenticatedLayout>
             <Head title="Profile" />
@@ -28,7 +29,8 @@ export default function Edit({
                     </div>
 
                     <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
-                        <BecomeVendorForm />
+                        <VendorRequestForm vendor={vendor} />
+
                     </div>
 
 
