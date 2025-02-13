@@ -123,7 +123,7 @@ export default function UpdateCustomerForm({ customer, className = '' }: { custo
                     <InputLabel htmlFor="email" value="Email" />
                     <TextInput
                         id="email"
-                        type="email"
+                        type="string"
                         className="mt-1 block w-full"
                         value={data.email}
                         onChange={(e) => setData('email', e.target.value)}
