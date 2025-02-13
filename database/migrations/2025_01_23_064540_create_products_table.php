@@ -17,20 +17,23 @@ return new class extends Migration
             $table->string('title', 2000);
             $table->string('slug', 2000);
             $table->longText('description');
-            $table->foreignId('department_id')
-                ->index()
-                ->constrained('departments');
-            $table->foreignId('category_id')
-                ->index()
-                ->constrained('categories');
+            $table->foreignId('department_id')->index()->constrained('departments');
+            $table->foreignId('category_id')->index()->constrained('categories');
             $table->decimal('price', 20, 4);
             $table->string('status')->index();
             $table->integer('quantity')->nullable();
+
+            // Linking to the vendors table where 'user_id' is the primary key
+            $table->foreignId('vendor_id')
+                ->constrained('vendors', 'user_id') // Explicitly reference user_id
+                ->cascadeOnDelete();
+
             $table->foreignIdFor(User::class, 'created_by');
             $table->foreignIdFor(User::class, 'updated_by');
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
+
     }
 
     /**

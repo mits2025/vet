@@ -22,9 +22,11 @@ return new class extends Migration
             $table->enum('status', array_column(VendorStatusEnum::cases(), 'value'))
                 ->default(VendorStatusEnum::Pending->value); // Default to pending
             $table->string('phone'); // Correct column name
+            $table->string('email');
             $table->string('store_name');
             $table->string('store_address')->nullable();
             $table->string('cover_image')->nullable();
+            $table->enum('availability', ['available', 'out'])->default('available');
 
             $table->text('rejection_reason')->nullable(); // Store rejection reason
             $table->timestamp('verified_at')->nullable(); // Timestamp for approval
