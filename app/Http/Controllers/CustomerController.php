@@ -12,7 +12,7 @@ class CustomerController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:customers,email,' . Auth::id(),
+            'email' => 'required|email|max:225',
             'phone' => 'required|string|max:20',
             'state' => 'required|string|max:255',
             'street' => 'nullable|string|max:255',
