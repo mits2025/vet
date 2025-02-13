@@ -26,6 +26,7 @@ class VendorRequestMail extends Mailable
                 'storeName' => $this->vendor->store_name,
                 'storeAddress' => $this->vendor->store_address,
                 'phoneNumber' => $this->vendor->phone,
+                'email' => $this->vendor->email
             ]);
     }
 
