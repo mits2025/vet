@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enum\ProductStatusEnum;
+use App\Enum\VendorStatusEnum;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -39,11 +40,16 @@ class Product extends Model implements HasMedia
 
     public function scopePublished (Builder $query): Builder
     {
-        return $query->where('status', ProductStatusEnum::Published);
+        return $query->where('products.status', ProductStatusEnum::Published);
     }
     public function scopeForWebsite (Builder $query): Builder
     {
-        return $query->published();
+        return $query->published()->vendorApproved();
+    }
+    public function scopeVendorApproved (Builder $query): Builder
+    {
+        return $query->join('vendors', 'vendors.user_id', '=', 'products.created_by')
+            ->where('vendors.status', VendorStatusEnum::Approved->value);
     }
     public function user(): BelongsTo
     {
@@ -81,4 +87,10 @@ class Product extends Model implements HasMedia
         }
         return $this->price;
     }
+
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class, 'vendor_id');
+    }
+
 }
