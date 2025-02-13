@@ -35,8 +35,10 @@ class ProductResource extends Resource
     protected static  SubNavigationPosition $subNavigationPosition = SubNavigationPosition::End;
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->forVendor();
+        return parent::getEloquentQuery()
+            ->where('vendor_id', auth()->id()); // Only show products for logged-in vendor
     }
+
 
     public static function form(Form $form): Form
     {
@@ -53,9 +55,10 @@ class ProductResource extends Resource
                                 $set('slug', Str::slug($state));
                             }),
                         TextInput::make('slug')
-                            ->label('route')
+                            ->label('Route')
                             ->required(),
-                        Forms\Components\Select::make('department_id')
+
+                        Select::make('department_id')
                             ->relationship('department', 'name')
                             ->label(__('Department'))
                             ->preload()
@@ -65,7 +68,8 @@ class ProductResource extends Resource
                             ->afterStateUpdated(function(callable $set) {
                                 $set('category_id', null);
                             }),
-                        Forms\Components\Select::make('category_id')
+
+                        Select::make('category_id')
                             ->relationship(
                                 name: 'category',
                                 titleAttribute: 'name',
@@ -79,8 +83,14 @@ class ProductResource extends Resource
                             ->label(__('Category'))
                             ->preload()
                             ->searchable()
-                            ->required()
+                            ->required(),
+
+                        // 🔹 Automatically set vendor_id (Hidden Field)
+                        Forms\Components\Hidden::make('vendor_id')
+                            ->default(fn() => auth()->user()->vendor ? auth()->user()->id : null)
+                            ->required(),
                     ])->columnSpan(2),
+
                 Forms\Components\RichEditor::make('description')
                     ->required()
                     ->toolbarButtons([
@@ -98,18 +108,21 @@ class ProductResource extends Resource
                         'table',
                     ])
                     ->columnSpan(2),
-                TextInput::make('price')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('quantity')
-                    ->integer(),
+
+                TextInput::make('price')->required()->numeric(),
+                TextInput::make('quantity')->integer(),
+
                 Select::make('status')
                     ->options(ProductStatusEnum::labels())
                     ->default(ProductStatusEnum::Draft->value)
                     ->required()
-
+                    ->disabled(function ($get, $record) {
+                        if (!$record) return false; // If creating a new product, allow editing
+                        return optional($record->vendor)->availability === 'out';
+                    })
             ]);
     }
+
 
     public static function table(Table $table): Table
     {
