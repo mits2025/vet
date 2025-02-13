@@ -37,9 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/customer/update', [CustomerController::class, 'update'])->name('customer.update');
 
     // User Becoming a Vendor Request
-    Route::post('/vendor/request', [VendorController::class, 'requestVendor'])
-        ->name('vendor.request')
-        ->middleware('auth');
+        Route::post('/vendor/request', [VendorController::class, 'requestVendor'])->name('vendor.request');
+
 
     // Verified Routes
     Route::middleware(['verified'])->group(function () {
