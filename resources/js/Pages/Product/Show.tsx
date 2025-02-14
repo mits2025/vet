@@ -2,7 +2,7 @@ import {Product, VariationTypeOption} from '@/types';
 import {useEffect, useMemo, useState} from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Carousel from "@/Components/Core/Carousel";
-import {Head, router, useForm, usePage} from "@inertiajs/react";
+import {Head, Link, router, useForm, usePage} from "@inertiajs/react";
 import Select, { SingleValue } from 'react-select';
 import {arraysAreEqual} from "@/helpers";
 
@@ -248,8 +248,14 @@ function Show({product, variationOptions} : {
                     </div>
 
                     {/* Product Info */}
-                    <div className="col-span-6 space-y-6">
+                    <div className="col-span-6 space-y-3">
                         <h1 className="text-3xl font-extrabold text-gray-900">{product.title}</h1>
+                        <p className='mb-8'>
+                            by <Link href={route('vendor.profile', product.user.store_name)}
+                                className="hover:underline">
+                                {product.user.store_name}
+                        </Link>
+                        </p>
 
                         {/* Price Display */}
                         <div className="border-t pt-4 text-gray-900">
