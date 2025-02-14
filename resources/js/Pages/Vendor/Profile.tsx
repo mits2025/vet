@@ -3,7 +3,7 @@ import { PageProps, Product, PaginationProps, Vendor } from "@/types";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import ProductItem from "@/Components/App/ProductItem";
-import {FaMapMarkerAlt, FaPhone, FaEnvelope, FaGlobe, FaCopy} from 'react-icons/fa';
+import {FaMapMarkerAlt, FaPhone, FaEnvelope, FaGlobe, FaCopy, FaCalendarAlt, FaClock} from 'react-icons/fa';
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
 
 function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: PaginationProps<Product> }>) {
@@ -53,7 +53,8 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
 
                             {/* Social Media Icons */}
                             <div className="flex justify-center md:justify-start gap-2 md:gap-3">
-                                {socialMediaLinks?.map((social, index) => (
+                            {socialMediaLinks && socialMediaLinks.length > 0 ? (
+                                socialMediaLinks.map((social, index) => (
                                     <a
                                         key={index}
                                         href={social.url}
@@ -64,8 +65,12 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                                         {social.platform === "instagram" && <FaInstagram className="text-lg md:text-xl" />}
                                         {social.platform === "twitter" && <FaTwitter className="text-lg md:text-xl" />}
                                     </a>
-                                ))}
-                            </div>
+                                ))
+                            ) : (
+                                <p className="text-gray-500 text-sm md:text-base">No social media links available.</p>
+                            )}
+                        </div>
+
                         </div>
                     </div>
                 </div>
@@ -75,7 +80,8 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
             <div className="md:hidden bg-base-100 shadow-lg">
                 <div className="container mx-auto px-4 py-4 space-y-4">
                     <div className="flex flex-col gap-3">
-                        {vendor.address && (
+                        {/* Address Section */}
+                        {vendor.address ? (
                             <div className="flex items-start gap-2">
                                 <FaMapMarkerAlt className="text-primary mt-1 flex-shrink-0" />
                                 <div className="flex-1">
@@ -91,6 +97,8 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                                     </div>
                                 </div>
                             </div>
+                        ) : (
+                            <p className="text-gray-500 text-sm">Address not available.</p>
                         )}
                         {vendor.phone && (
                             <div className="flex items-start gap-2">
@@ -117,7 +125,7 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                             <div className="card-body">
                                 <h2 className="card-title mb-3">Contact</h2>
                                 <div className="space-y-2">
-                                    {vendor.address && (
+                                {vendor.address ? (
                                         <div className="flex items-center gap-2">
                                             <FaMapMarkerAlt className="text-primary" />
                                             <div className="flex-1">
@@ -133,7 +141,10 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                                                 </div>
                                             </div>
                                         </div>
+                                    ) : (
+                                        <p className="text-gray-500 text-sm">Address not available.</p>
                                     )}
+
                                     {vendor.phone && (
                                         <div className="flex items-center gap-2">
                                             <FaPhone className="text-primary" />
@@ -194,28 +205,31 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                         </div>
 
                         {/* Opening Hours Card */}
+                        {/* Opening Hours Card */}
                         <div className="card bg-base-100 shadow-sm">
                             <div className="card-body p-4 sm:p-6">
                                 <h2 className="card-title text-lg sm:text-xl mb-3">Opening Hours</h2>
-                                <div className="space-y-0">
+                                <div className="space-y-2">
                                     {Array.isArray(openingHours) && openingHours.length > 0 ? (
                                         openingHours.map((hours, index) => (
-                                            <div key={index}>
-                                                <div className="flex justify-between items-center py-3 px-2 hover:bg-base-200 rounded-lg transition-colors">
+                                            <div
+                                                key={index}
+                                                className="flex justify-between items-center p-3 bg-white-200 rounded-lg shadow-sm transition-all hover:bg-base-300"
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    <FaCalendarAlt className="text-primary text-sm" />
                                                     <span className="font-medium text-sm">{hours.day}</span>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <FaClock className="text-primary text-sm" />
                                                     <span className="text-sm">
                                                         {hours.open} - {hours.close}
                                                     </span>
                                                 </div>
-                                                {index < openingHours.length - 1 && (
-                                                    <div className="divider my-0 h-0"></div>
-                                                )}
                                             </div>
                                         ))
                                     ) : (
-                                        <p className="text-gray-500 text-center py-2">
-                                            Opening hours not available
-                                        </p>
+                                        <p className="text-gray-500 text-center py-2">Opening hours not available</p>
                                     )}
                                 </div>
                             </div>
