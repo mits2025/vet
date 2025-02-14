@@ -118,10 +118,10 @@ class ProductResource extends Resource
                     ->options(ProductStatusEnum::labels())
                     ->default(ProductStatusEnum::Draft->value)
                     ->required()
-                    ->disabled(function ($get, $record) {
-                        if (!$record) return false; // If creating a new product, allow editing
-                        return optional($record->vendor)->availability === 'out';
-                    })
+                        ->disabled(function ($get, $record) {
+                            if (!$record) return false; // If creating a new product, allow editing
+                            return optional($record->vendor)->availability === 'out';
+                        })
             ]);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\ProductStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\VendorStatusEnum;
@@ -23,6 +24,8 @@ class Vendor extends Model
         'cover_image',
         'rejection_reason',
         'verified_at',
+        'availability',
+        'status',
     ];
 
     protected $casts = [
@@ -31,6 +34,29 @@ class Vendor extends Model
         'opening_hours' => 'array',
         'social_media_links' => 'array',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::updated(function ($vendor) {
+            if ($vendor->isDirty('availability')) { // Check if availability changed
+                if ($vendor->availability === 'out') {
+                    // Store previous status before unpublishing
+                    $vendor->products()->update([
+                        'previous_status' => \DB::raw('status'), // Save current status
+                        'status' => ProductStatusEnum::Draft,   // Unpublish the product
+                    ]);
+                } else {
+                    // Restore previous status when availability changes back to "available"
+                    $vendor->products()->whereNotNull('previous_status')->update([
+                        'status' => \DB::raw('previous_status'), // Restore the saved status
+                        'previous_status' => null, // Clear previous status
+                    ]);
+                }
+            }
+        });
+    }
 
     public function user()
     {

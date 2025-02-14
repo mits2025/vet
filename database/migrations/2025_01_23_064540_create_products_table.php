@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('category_id')->index()->constrained('categories');
             $table->decimal('price', 20, 4);
             $table->string('status')->index();
+            $table->string('previous_status')->nullable()->after('status'); // Stores the original status
             $table->integer('quantity')->nullable();
 
             // Linking to the vendors table where 'user_id' is the primary key

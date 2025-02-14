@@ -44,8 +44,7 @@ class VendorResource extends Resource
                 ])
                 ->default('available')
                 ->required()
-                ->reactive()
-                ->afterStateUpdated(fn ($state, $record) => self::updateProductStatus($record, $state)),
+                ->reactive(),
             TextArea::make('rejection_reason')
                 ->label('Rejection Reason')
                 ->visible(fn (Forms\Get $get) => $get('status') === VendorStatusEnum::Rejected->value)
@@ -97,13 +96,4 @@ class VendorResource extends Resource
         return $user && $user->hasRole(RolesEnum::Admin);
     }
 
-    /**
-     * Updates all related products' status when vendor availability changes.
-     */
-    private static function updateProductStatus(Vendor $vendor, string $availability): void
-    {
-        if ($availability === 'out') {
-            $vendor->products()->update(['status' => ProductStatusEnum::Draft->value]);
-        }
-    }
 }

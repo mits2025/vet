@@ -20,7 +20,7 @@ class EnsureVendorIsApproved
 
 
 
-        // Allow only admins OR approved vendors
+        // Allow only admins OR  vendors
         if ($user->hasRole(RolesEnum::Admin) ||
             ($user->hasRole(RolesEnum::Vendor) && $user->vendor && $user->vendor->status->value === VendorStatusEnum::Approved->value)) {
             return $next($request);
