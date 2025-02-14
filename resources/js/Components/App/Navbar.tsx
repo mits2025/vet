@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, usePage } from "@inertiajs/react";
 import MiniCartDropdown from "@/Components/App/MiniCartDropdown";
 import {UserCircleIcon} from "@heroicons/react/24/solid";
+import {FaSignInAlt, FaSignOutAlt, FaStore, FaUser, FaUserPlus} from "react-icons/fa";
 
 function Navbar() {
     const { auth }: any = usePage().props;
@@ -68,28 +69,47 @@ function Navbar() {
             <div className="hidden md:flex flex-none gap-4 items-center">
                 {user ? (
                     <div className="dropdown dropdown-end">
-                        <div tabIndex={0} role="button" className="avatar placeholder">
-                            <UserCircleIcon  className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"/>
+                        {/* Profile Avatar Button */}
+                        <div tabIndex={0} role="button" className="avatar placeholder flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-base-200 transition">
+                            <UserCircleIcon className="h-10 w-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"/>
                         </div>
-                        <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 mt-4">
-                            <li><Link href={route('profile.edit')}>Profile</Link></li>
-                            <li className='bg-indigo-600 text-white'>
-                                <Link href={`${route('profile.edit')}#vendor-request`}>
-                                    Become Vendor
+
+                        {/* Dropdown Menu */}
+                        <ul
+                            tabIndex={0}
+                            className="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-lg w-56 mt-4 border border-base-200"
+                        >
+                            <li>
+                                <Link href={route('profile.edit')} className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-200 transition">
+                                    <FaUser className="text-primary" />
+                                    <span>Profile</span>
                                 </Link>
                             </li>
-
-                            <li><Link href={route('logout')} method="post">Logout</Link></li>
-
+                            <li>
+                                <Link
+                                    href={`${route('profile.edit')}#vendor-request`}
+                                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition"
+                                >
+                                    <FaStore className="text-white" />
+                                    <span>Become a Vendor</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href={route('logout')} method="post" className="flex items-center gap-2 px-4 py-2 rounded-lg text-error hover:bg-red-100 transition">
+                                    <FaSignOutAlt className="text-error" />
+                                    <span>Logout</span>
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                 ) : (
                     <div className="flex gap-2">
-                        <Link href={route('login')} className="btn btn-outline px-6">Login</Link>
-                        <Link href={route('register')} className="btn btn-primary px-6 text-white">Sign Up</Link>
+                        <Link href={route('login')} className="btn btn-outline px-6 hover:bg-base-200 transition">Login</Link>
+                        <Link href={route('register')} className="btn btn-primary px-6 text-white hover:bg-indigo-700 transition">Sign Up</Link>
                     </div>
                 )}
             </div>
+
 
             {/* Mobile search input */}
             {isSearchOpen && (
@@ -104,20 +124,47 @@ function Navbar() {
 
             {/* Mobile menu content */}
             {isMobileMenuOpen && (
-                <div ref={mobileMenuRef} className="absolute top-full left-0 right-0 bg-base-100 shadow-lg md:hidden flex flex-col p-4 gap-2">
+                <div
+                    ref={mobileMenuRef}
+                    className="absolute top-full left-0 right-0 bg-base-100 shadow-lg md:hidden flex flex-col p-4 gap-2 rounded-b-lg transition-all duration-300"
+                >
                     {user ? (
                         <>
-                            <Link href={route('profile.edit')} className="btn btn-ghost justify-start">Profile</Link>
-                            <Link href={route('logout')} method="post" className="btn btn-ghost justify-start text-error">Logout</Link>
+                            <Link href={route('profile.edit')} className="flex items-center gap-2 px-4 py-3 rounded-lg hover:bg-base-200 transition">
+                                <FaUser className="text-primary" />
+                                <span className="font-medium text-sm">Profile</span>
+                            </Link>
+                            <Link
+                                href={`${route('profile.edit')}#vendor-request`}
+                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition"
+                            >
+                                <FaStore className="text-white" />
+                                <span className="font-medium text-sm">Become a Vendor</span>
+                            </Link>
+                            <Link
+                                href={route('logout')}
+                                method="post"
+                                className="flex items-center gap-2 px-4 py-3 rounded-lg text-error hover:bg-red-100 transition"
+                            >
+                                <FaSignOutAlt className="text-error" />
+                                <span className="font-medium text-sm">Logout</span>
+                            </Link>
                         </>
                     ) : (
                         <>
-                            <Link href={route('login')} className="btn btn-ghost justify-start">Login</Link>
-                            <Link href={route('register')} className="btn btn-ghost justify-start text-primary">Sign Up</Link>
+                            <Link href={route('login')} className="flex items-center gap-2 px-4 py-3 rounded-lg hover:bg-base-200 transition">
+                                <FaSignInAlt className="text-primary" />
+                                <span className="font-medium text-sm">Login</span>
+                            </Link>
+                            <Link href={route('register')} className="flex items-center gap-2 px-4 py-3 rounded-lg text-primary hover:bg-base-200 transition">
+                                <FaUserPlus className="text-primary" />
+                                <span className="font-medium text-sm">Sign Up</span>
+                            </Link>
                         </>
                     )}
                 </div>
             )}
+
             <MiniCartDropdown/>
         </div>
 
