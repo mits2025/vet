@@ -19,7 +19,7 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
             alert("Address copied to clipboard!"); // You can replace this with a toast notification
         }).catch(err => console.error("Failed to copy: ", err));
     };
-
+/*need for commit*/
     return (
         <AuthenticatedLayout>
             <Head title={`${vendor?.store_name || 'Vendor'} Profile`} />
