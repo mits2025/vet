@@ -21,10 +21,17 @@ return new class extends Migration
 
             $table->enum('status', array_column(VendorStatusEnum::cases(), 'value'))
                 ->default(VendorStatusEnum::Pending->value); // Default to pending
-            $table->string('phone'); // Correct column name
-            $table->string('email');
+
             $table->string('store_name');
-            $table->string('store_address')->nullable();
+            $table->string('profile_image')->nullable(); // Store vendor profile image
+            $table->text('description')->nullable(); // Vendor description
+            $table->string('address')->nullable(); // Address (renamed for consistency)
+            $table->string('phone');
+            $table->string('email');
+
+            $table->json('opening_hours')->nullable(); // JSON structure for opening hours
+            $table->json('social_media_links')->nullable(); // JSON structure for social media
+
             $table->string('cover_image')->nullable();
             $table->enum('availability', ['available', 'out'])->default('available');
 

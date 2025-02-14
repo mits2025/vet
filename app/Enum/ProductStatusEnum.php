@@ -16,7 +16,7 @@ enum ProductStatusEnum: string
     public static function colors(): array
     {
         return [
-            'gray' => self::Draft->value,
+            'danger' => self::Draft->value,
             'success' => self::Published->value,
         ];
     }

@@ -73,7 +73,14 @@ function Navbar() {
                         </div>
                         <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 mt-4">
                             <li><Link href={route('profile.edit')}>Profile</Link></li>
+                            <li className='bg-indigo-600 text-white'>
+                                <Link href={`${route('profile.edit')}#vendor-request`}>
+                                    Become Vendor
+                                </Link>
+                            </li>
+
                             <li><Link href={route('logout')} method="post">Logout</Link></li>
+
                         </ul>
                     </div>
                 ) : (

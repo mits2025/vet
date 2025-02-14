@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enum\ProductStatusEnum;
+use App\Enum\RolesEnum;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\Pages\EditProduct;
 use App\Filament\Resources\ProductResource\Pages\ProductImages;
@@ -11,6 +12,7 @@ use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Department;
 use App\Models\Product;
 use Filament\Actions\CreateAction;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -30,7 +32,7 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-queue-list';
+    protected static ?string $navigationIcon = 'heroicon-c-tag';
 
     protected static  SubNavigationPosition $subNavigationPosition = SubNavigationPosition::End;
     public static function getEloquentQuery(): Builder
@@ -170,6 +172,11 @@ class ProductResource extends Resource
         return [
             //
         ];
+    }
+    public static function canViewAny(): bool
+    {
+        $user = Filament::auth()->user();
+        return $user && $user->hasRole(RolesEnum::Vendor);
     }
 
     public static function getPages(): array

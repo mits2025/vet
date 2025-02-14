@@ -46,6 +46,7 @@ class CartService
             ]);
         }
 
+
         if (Auth::check()) {
             $this->saveItemToDatabase($product->id, $quantity, $optionIds, $price);
         } else {

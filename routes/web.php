@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [ProductController::class, 'home'])->name('dashboard');
 Route::get('/product/{product:slug}', [ProductController::class, 'show'])->name('product.show');
 
+Route::get('/s/{vendor:store_name}', [VendorController::class, 'profile'])->name('vendor.profile');
+
 // ========================
 // Cart Routes
 // ========================
@@ -36,7 +38,7 @@ Route::middleware('auth')->group(function () {
     // Customer (Shipping Information) Update
     Route::post('/customer/update', [CustomerController::class, 'update'])->name('customer.update');
 
-    // User Becoming a Vendor Request
+    // User Becoming a Vendor
         Route::post('/vendor/request', [VendorController::class, 'requestVendor'])->name('vendor.request');
 
 

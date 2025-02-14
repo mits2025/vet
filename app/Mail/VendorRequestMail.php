@@ -24,7 +24,7 @@ class VendorRequestMail extends Mailable
             ->view('emails.vendor_request')
             ->with([
                 'storeName' => $this->vendor->store_name,
-                'storeAddress' => $this->vendor->store_address,
+                'Address' => $this->vendor->address,
                 'phoneNumber' => $this->vendor->phone,
                 'email' => $this->vendor->email
             ]);

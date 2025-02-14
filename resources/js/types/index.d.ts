@@ -38,6 +38,7 @@ export type Product = {
     user: {
         id: number;
         name: string;
+        store_name: string;
     };
     department: {
         id: number;
@@ -86,3 +87,17 @@ export type PageProps<
     totalPrice: number;
     miniCartItems: CartItem[];
 };
+
+export type Vendor = {
+    id: number;
+    profile_image?: string | null; // Allow null in case the image isn't set
+    store_name: string;
+    address: string;
+    phone: string;
+    description: string;
+    email: string;
+    opening_hours: string | { day: string; open: string; close: string; }[]; // Allow both types
+    social_media_links: { platform: string; url: string }[];
+    store_address: string;
+};
+

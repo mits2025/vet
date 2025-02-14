@@ -7,7 +7,7 @@
 <h2>New Vendor Request Submitted</h2>
 
 <p><strong>Store Name:</strong> {{ $vendor->store_name }}</p>
-<p><strong>Store Address:</strong> {{ $vendor->store_address ?? 'Not Provided' }}</p>
+<p><strong>Store Address:</strong> {{ $vendor->address ?? 'Not Provided' }}</p>
 <p><strong>Phone Number:</strong> {{ $phoneNumber }}</p>
 <p><strong>Email:</strong> {{ $vendor->email }}</p>
 <p><strong>Status:</strong> {{ ucfirst($vendor->status->value) }}</p>

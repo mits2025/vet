@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enum\RolesEnum;
+use App\Enum\VendorStatusEnum;
 use App\Http\Resources\ProductListResource;
 use App\Mail\VendorRequestMail;
 use App\Models\Product;
@@ -28,22 +29,37 @@ class VendorController extends Controller
     }
     public function requestVendor(Request $request)
     {
-        $user = Auth::user(); // ✅ Get the authenticated user
+        $user = Auth::user();
+
         $request->validate([
             'store_name' => 'required|string|max:255',
             'store_address' => 'nullable|string|max:255',
             'phone' => 'required|string|max:20',
             'email' => 'required|email|max:225',
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ensure image is valid
+            'description' => 'nullable|string',
+            'opening_hours' => 'nullable|array',
+            'social_media_links' => 'nullable|array',
         ]);
+
+        // Handle file upload
+        $profileImagePath = null;
+        if ($request->hasFile('profile_image')) {
+            $profileImagePath = $request->file('profile_image')->store('vendor_images', 'public'); // Store in storage/app/public/vendor_images
+        }
 
         $vendor = Vendor::updateOrCreate(
             ['user_id' => Auth::id()],
             [
                 'store_name' => $request->store_name,
-                'store_address' => $request->store_address,
+                'address' => $request->address,
                 'phone' => $request->phone,
                 'email' => $request->email,
-                'status' => 'pending',
+                'profile_image' => $profileImagePath, // Store file path instead of string
+                'description' => $request->description,
+                'opening_hours' => json_encode($request->opening_hours),
+                'social_media_links' => json_encode($request->social_media_links),
+                'status' => VendorStatusEnum::Pending->value,
             ]
         );
 
@@ -54,11 +70,12 @@ class VendorController extends Controller
         // Send email notification
         Mail::to('admin@example.com')->send(new VendorRequestMail($vendor));
 
-        // Redirect back with the updated vendor data
         return redirect()->back()->with([
             'success' => 'Your vendor request has been submitted.',
-            'vendor' => $vendor, // Send back updated vendor data
+            'vendor' => $vendor,
         ]);
 
     }
+
+
 }

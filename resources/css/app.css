@@ -60,6 +60,11 @@
     background-color: #eaf4ff;
     color: #4156e2;
 }
+.break-words {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
 /* Base styles for modern text input */
 .text-input {
     width: 100%;

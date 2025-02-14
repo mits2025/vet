@@ -32,7 +32,7 @@ export default function ProductItem({ product }: { product: Product }) {
                     {product.title}
                 </h2>
                 <p className="text-[10px] md:text-xs text-gray-500">
-                    by <Link href="/" className="text-blue-500 hover:underline">{product.user.name}</Link>&nbsp;
+                    by <Link href={route('vendor.profile', product.user.store_name)} className="text-blue-500 hover:underline">{product.user.store_name}</Link>&nbsp;
                     in <Link href="/" className="text-blue-500 hover:underline">{product.department.name}</Link>
                 </p>
                 <div className="flex items-center justify-between">

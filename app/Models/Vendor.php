@@ -28,6 +28,8 @@ class Vendor extends Model
     protected $casts = [
         'status' => VendorStatusEnum::class, // Cast status as enum
         'verified_at' => 'datetime', // Ensure timestamp is properly formatted
+        'opening_hours' => 'array',
+        'social_media_links' => 'array',
     ];
 
     public function user()
