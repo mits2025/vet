@@ -10,10 +10,21 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
     const openingHours = typeof vendor.opening_hours === "string"
         ? JSON.parse(vendor.opening_hours)
         : vendor.opening_hours;
+
     const socialMediaLinks = typeof vendor.social_media_links === "string"
         ? JSON.parse(vendor.social_media_links)
         : vendor.social_media_links;
+
     const [showFullDescription, setShowFullDescription] = useState(false);
+
+    const parsedLinks = (() => {
+        try {
+            const data = JSON.parse(socialMediaLinks); // Parse JSON safely
+            return Array.isArray(data) ? data.filter(link => link && link.url) : []; // Ensure it's an array and remove null/invalid values
+        } catch (error) {
+            return []; // If parsing fails, return an empty array
+        }
+    })();
     const copyToClipboard = (text: string) => {
         navigator.clipboard.writeText(text).then(() => {
             alert("Address copied to clipboard!"); // You can replace this with a toast notification
@@ -53,22 +64,22 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
 
                             {/* Social Media Icons */}
                             <div className="flex justify-center md:justify-start gap-2 md:gap-3">
-                            {socialMediaLinks && socialMediaLinks.length > 0 ? (
-                                socialMediaLinks.map((social, index) => (
-                                    <a
-                                        key={index}
-                                        href={social.url}
-                                        target="_blank"
-                                        className="btn btn-circle btn-sm md:btn-md btn-ghost hover:bg-white/10"
-                                    >
-                                        {social.platform === "facebook" && <FaFacebook className="text-lg md:text-xl" />}
-                                        {social.platform === "instagram" && <FaInstagram className="text-lg md:text-xl" />}
-                                        {social.platform === "twitter" && <FaTwitter className="text-lg md:text-xl" />}
-                                    </a>
-                                ))
-                            ) : (
-                                <p className="text-gray-500 text-sm md:text-base">No social media links available.</p>
-                            )}
+                                {parsedLinks.length > 0 ? (
+                                    parsedLinks.map((social, index) => (
+                                        <a
+                                            key={index}
+                                            href={social.url}
+                                            target="_blank"
+                                            className="btn btn-circle btn-sm md:btn-md btn-ghost hover:bg-white/10"
+                                        >
+                                            {social.platform === "facebook" && <FaFacebook className="text-lg md:text-xl" />}
+                                            {social.platform === "instagram" && <FaInstagram className="text-lg md:text-xl" />}
+                                            {social.platform === "twitter" && <FaTwitter className="text-lg md:text-xl" />}
+                                        </a>
+                                    ))
+                                ) : (
+                                    <p className="text-gray-500 text-sm md:text-base">No social media links available.</p>
+                                )}
                         </div>
 
                         </div>
@@ -165,26 +176,30 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                             <div className="card-body">
                                 <h2 className="card-title mb-3">Social Media</h2>
                                 <div className="flex flex-wrap gap-3">
-                                    {socialMediaLinks?.map((social, index) => (
-                                        <a
-                                            key={index}
-                                            href={social.url}
-                                            target="_blank"
-                                            className="btn btn-outline btn-sm gap-2"
-                                        >
-                                            {social.platform === "facebook" && <FaFacebook />}
-                                            {social.platform === "instagram" && <FaInstagram />}
-                                            {social.platform === "twitter" && <FaTwitter />}
-                                            <span className="capitalize">{social.platform}</span>
-                                        </a>
-                                    ))}
+                                    {parsedLinks.length > 0 ? (
+                                        parsedLinks.map((social, index) => (
+                                            <a
+                                                key={index}
+                                                href={social.url}
+                                                target="_blank"
+                                                className="btn btn-circle btn-sm md:btn-md btn-ghost hover:bg-white/10"
+                                            >
+                                                {social.platform === "facebook" && <FaFacebook className="text-lg md:text-xl" />}
+                                                {social.platform === "instagram" && <FaInstagram className="text-lg md:text-xl" />}
+                                                {social.platform === "twitter" && <FaTwitter className="text-lg md:text-xl" />}
+                                            </a>
+                                        ))
+                                    ) : (
+                                        <p className="text-gray-500 text-sm md:text-base">No social media links available.</p>
+                                    )}
+
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     {/* Center Column (Description) */}
-                    <div className="lg:col-span-2 space-y-4 -mt-8">
+                    <div className="lg:col-span-2 space-y-4 -mt-4">
                         <div className="card bg-base-100 shadow-sm">
                             <div className="card-body p-4 sm:p-6">
                                 <h2 className="card-title text-lg sm:text-xl mb-3">About Us</h2>
@@ -205,9 +220,7 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                         </div>
 
                         {/* Opening Hours Card */}
-                        {/* Opening Hours Card */}
-                        <div className="card bg-base-100 shadow-sm">
-                            <div className="card-body p-4 sm:p-6">
+                        <div className="bg-base-100 shadow-sm card-body p-4 sm:p-6">
                                 <h2 className="card-title text-lg sm:text-xl mb-3">Opening Hours</h2>
                                 <div className="space-y-2">
                                     {Array.isArray(openingHours) && openingHours.length > 0 ? (
@@ -232,7 +245,6 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                                         <p className="text-gray-500 text-center py-2">Opening hours not available</p>
                                     )}
                                 </div>
-                            </div>
                         </div>
                     </div>
                 </div>

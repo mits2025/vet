@@ -23,7 +23,7 @@ export default function VendorRequestForm({ vendor, className = '' }: { vendor?:
     });
 
     const hasExistingRequest = !!vendor;
-    const status = vendor?.status || 'pending';
+    const status = vendor?.status || "";
 
     const statusColors: Record<string, string> = {
         pending: 'bg-gray-200 text-gray-800',
@@ -95,9 +95,13 @@ export default function VendorRequestForm({ vendor, className = '' }: { vendor?:
     return (
         <section ref={sectionRef} className={className}>
             {/* Vendor Status Display */}
-            <div className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${statusColors[status]}`}>
-                {status.charAt(0).toUpperCase() + status.slice(1)}
-            </div>
+            {status ? (
+                <div className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${statusColors[status] || "bg-gray-300 text-gray-700"}`}>
+                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                </div>
+            ) : (
+                <p className="text-indigo-500 text-sm font-medium">Awaiting submission</p>
+            )}
 
             <header className="mt-4">
                 <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
