@@ -14,7 +14,10 @@ import {
     FaCalendarAlt,
     FaClock,
     FaCheck,
-    FaMap
+    FaMap,
+    FaBox,
+    FaShoppingBag,
+    FaStar
 } from 'react-icons/fa';
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
 import UploadStoryModal from "@/Components/Core/UploadStoryModal";
@@ -275,68 +278,43 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
                     {/* Left Column */}
                     <div className="lg:col-span-1 space-y-4">
-                        {/* Contact Card - Desktop */}
-                        <div className="hidden md:block card bg-base-100 shadow-md">
-                            <div className="card-body">
-                                <h2 className="card-title mb-3">Contact</h2>
-                                <div className="space-y-2">
-                                    {/* Address & Map Section */}
-                                    {vendor.address ? (
-                                        <div className="flex flex-col gap-2">
-                                            {/* Address and Copy Button */}
-                                            <div className="flex items-start gap-2">
-                                                <FaMapMarkerAlt className="text-primary mt-1 flex-shrink-0"/>
-                                                <div className="flex-1">
-                                                    <p className="font-medium text-sm">Address</p>
-                                                    <div className="flex items-start gap-1">
-                                                        <span
-                                                            className="text-sm break-words">{vendor.address}</span>
-                                                        <button
-                                                            onClick={() => copyToClipboard(vendor.address)}
-                                                            className="btn btn-ghost btn-xs p-1"
-                                                        >
-                                                            <FaCopy className="text-xs"/>
-                                                        </button>
-                                                    </div>
+                        {/* Opening Hours Card - Now in left column */}
+                        <div className="bg-base-100 shadow-md card-body">
+                            <h2 className="card-title text-lg sm:text-xl mb-3">Opening Hours</h2>
+                            <div className="space-y-2">
+                                {Array.isArray(openingHours) && openingHours.length > 0 ? (
+                                    openingHours.map((hours, index) => {
+                                        const isOpen = checkIfOpen(hours);
+                                        return (
+                                            <div
+                                                key={index}
+                                                className={`flex justify-between items-center p-3 rounded-lg shadow-sm transition-all hover:bg-base-300 ${isOpen ? 'bg-success/10' : 'bg-base-200'}`}
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    <FaCalendarAlt className="text-primary text-sm"/>
+                                                    <span className="font-medium text-sm">{hours.day}</span>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    {isOpen ? (
+                                                        <>
+                                                            <div className="w-2 h-2 rounded-full bg-success animate-pulse"></div>
+                                                            <FaClock className="text-primary text-sm"/>
+                                                            <span className="text-sm">{hours.open} - {hours.close}</span>
+                                                            <span className="text-success font-medium">Open</span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <span className="text-gray-500 text-sm">{hours.open} - {hours.close}</span>
+                                                            <span className="text-red-500 font-medium">Closed</span>
+                                                        </>
+                                                    )}
                                                 </div>
                                             </div>
-
-                                            {/* Map Preview (No Card) */}
-                                            <h2 className="font-medium text-sm flex items-center gap-2">
-                                                <FaMap className="text-primary"/> Location
-                                            </h2>
-                                            <div className="aspect-video rounded-lg overflow-hidden">
-                                                <iframe
-                                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(vendor.address)}&output=embed`}
-                                                    className="w-full h-full"
-                                                />
-                                            </div>
-
-                                            {/* Copy Button Below Map */}
-                                            <button
-                                                className="btn btn-outline mt-2 hover:bg-primary/10"
-                                                onClick={() => copyToClipboard(vendor.address)}
-                                            >
-                                                <FaCopy/> Copy Address
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <p className="text-gray-500 text-sm">Address not available.</p>
-                                    )}
-
-
-                                    {vendor.phone && (
-                                        <div className="flex items-center gap-2">
-                                            <FaPhone className="text-primary"/>
-                                            <div className="flex-1">
-                                                <p className="font-medium">Phone</p>
-                                                <a href={`tel:${vendor.phone}`} className="text-sm link link-hover">
-                                                    {vendor.phone}
-                                                </a>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
+                                        );
+                                    })
+                                ) : (
+                                    <p className="text-gray-500 text-center py-2">Opening hours not available</p>
+                                )}
                             </div>
                         </div>
 
@@ -366,21 +344,77 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
 
                                 </div>
                             </div>
+                            {vendor.phone && (
+                                <div className="flex ml-5 -mt-2 items-start gap-2">
+                                    <FaPhone className="text-primary mt-1 flex-shrink-0"/>
+                                    <div className="flex-1">
+                                        <p className="font-medium text-sm">Phone</p>
+                                        <a href={`tel:${vendor.phone}`} className="text-sm link link-hover">
+                                            {vendor.phone}
+                                        </a>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
 
-                    {/* Center Column (Description) */}
+                    {/* Center Column */}
                     <div className="lg:col-span-2 space-y-4 -mt-4">
-                        <div className="card bg-base-100 shadow-sm">
+                        {/* Address & Location Card - Hidden on mobile */}
+                        <div className="card bg-base-100 shadow-sm hidden md:block">
                             <div className="card-body p-4 sm:p-6">
-                                <h2 className="card-title text-lg sm:text-xl mb-3">About Us</h2>
-                                <p className="text-sm sm:text-base text-gray-600 break-words">
+                                <h2 className="card-title text-lg sm:text-xl mb-3">Location</h2>
+                                {vendor.address ? (
+                                    <div className="space-y-4">
+                                        <div className="flex items-start gap-2">
+                                            <FaMapMarkerAlt className="text-primary mt-1 flex-shrink-0"/>
+                                            <div className="flex-1">
+                                                <p className="font-medium text-sm">Address</p>
+                                                <div className="flex items-start gap-1">
+                                                    <span className="text-sm break-words">{vendor.address}</span>
+                                                    <button
+                                                        onClick={() => copyToClipboard(vendor.address)}
+                                                        className="btn btn-ghost btn-xs p-1"
+                                                    >
+                                                        <FaCopy className="text-xs"/>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="aspect-video rounded-lg overflow-hidden">
+                                            <iframe
+                                                src={`https://maps.google.com/maps?q=${encodeURIComponent(vendor.address)}&output=embed`}
+                                                className="w-full h-full"
+                                            />
+                                        </div>
+
+                                        <button
+                                            className="btn btn-outline w-full hover:bg-primary/10"
+                                            onClick={() => copyToClipboard(vendor.address)}
+                                        >
+                                            <FaCopy/> Copy Address
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <p className="text-gray-500 text-sm">Address not available.</p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        {/* About Us - Optimized for mobile */}
+                        <div className="card bg-base-100 shadow-sm">
+                            <div className="card-body p-3 sm:p-6">
+                                <h2 className="card-title text-base sm:text-xl mb-2 sm:mb-3">About Us</h2>
+                                <p className="text-sm sm:text-base text-base-content/80 break-words">
                                     {showFullDescription
                                         ? vendor.description
                                         : `${vendor.description.substring(0, 250)}...`}
                                     {vendor.description.length > 250 && (
                                         <button
-                                            className="text-primary font-semibold ml-2 hover:underline"
+                                            className="text-primary font-medium ml-1 hover:underline text-sm"
                                             onClick={() => setShowFullDescription(!showFullDescription)}
                                         >
                                             {showFullDescription ? "Show Less" : "Read More"}
@@ -390,55 +424,42 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                             </div>
                         </div>
 
-                        {/* Opening Hours Card */}
-                        <div className="bg-base-100 shadow-sm card-body p-4 sm:p-6">
-                            <h2 className="card-title text-lg sm:text-xl mb-3">Opening Hours</h2>
-                            <div className="space-y-2">
-                                {Array.isArray(openingHours) && openingHours.length > 0 ? (
-                                    openingHours.map((hours, index) => {
-                                        const isOpen = checkIfOpen(hours); // Check if currently open
-                                        return (
-                                            <div
-                                                key={index}
-                                                className={`flex justify-between items-center p-3 rounded-lg shadow-sm transition-all hover:bg-base-300 ${isOpen ? 'bg-success/10' : 'bg-base-200'}`}
-                                            >
-                                                <div className="flex items-center gap-2">
-                                                    <FaCalendarAlt className="text-primary text-sm"/>
-                                                    <span className="font-medium text-sm">{hours.day}</span>
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    {isOpen ? (
-                                                        <>
-                                                            <div
-                                                                className="w-2 h-2 rounded-full bg-success animate-pulse"></div>
-                                                            <FaClock className="text-primary text-sm"/>
-                                                            <span
-                                                                className="text-sm">{hours.open} - {hours.close}</span>
-                                                            <span
-                                                                className="text-success font-medium">Open</span> {/* Separate Open Text */}
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <span
-                                                                className="text-gray-500 text-sm">{hours.open} - {hours.close}</span>
-                                                            <span
-                                                                className="text-red-500 font-medium">Closed</span> {/* Separate Closed Text */}
-                                                        </>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        );
-                                    })
-                                ) : (
-                                    <p className="text-gray-500 text-center py-2">Opening hours not available</p>
-                                )}
+
+                        {/* Stats section - Optimized for mobile */}
+                        <div className="card bg-base-100 shadow-sm">
+                            <div className="card-body p-3 sm:p-6">
+                                <h2 className="card-title text-base sm:text-xl mb-2 sm:mb-3">Store Statistics</h2>
+                                <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                                    <div className="stat bg-base-200 rounded-lg p-2 sm:p-4 text-center hover:bg-base-300 transition-colors">
+                                        <div className="stat-title text-base-content/70 text-xs sm:text-sm flex items-center justify-center gap-1.5">
+                                            <FaBox className="text-primary text-xs sm:text-sm" /> Products
+                                        </div>
+                                        <div className="stat-value text-primary text-lg sm:text-2xl mt-1">
+                                            {vendor.stats?.total_products || 0}
+                                        </div>
+                                    </div>
+
+                                    <div className="stat bg-base-200 rounded-lg p-2 sm:p-4 text-center hover:bg-base-300 transition-colors">
+                                        <div className="stat-title text-base-content/70 text-xs sm:text-sm flex items-center justify-center gap-1.5">
+                                            <FaShoppingBag className="text-primary text-xs sm:text-sm" /> Orders
+                                        </div>
+                                        <div className="stat-value text-primary text-lg sm:text-2xl mt-1">
+                                            {vendor.stats?.total_orders || 0}
+                                        </div>
+                                    </div>
+
+                                    <div className="stat bg-base-200 rounded-lg p-2 sm:p-4 text-center hover:bg-base-300 transition-colors">
+                                        <div className="stat-title text-base-content/70 text-xs sm:text-sm flex items-center justify-center gap-1.5">
+                                            <FaStar className="text-primary text-xs sm:text-sm" /> Rating
+                                        </div>
+                                        <div className="stat-value text-primary text-lg sm:text-2xl mt-1">
+                                            {vendor.stats?.average_rating?.toFixed(1) || 0}
+                                        </div>
+                                        <div className="stat-desc text-[10px] sm:text-xs mt-0.5">Based on reviews</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-
-                    </div>
-                </div>
-            </div>
 
             {/* Products Section */}
             <div className="container mx-auto px-4 py-6 md:py-8">
@@ -470,7 +491,9 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                 )}
             </div>
         </AuthenticatedLayout>
+
     );
+
 }
 
 

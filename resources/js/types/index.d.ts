@@ -100,5 +100,11 @@ export type Vendor = {
     opening_hours: string | { day: string; open: string; close: string; }[];
     social_media_links: { platform: string; url: string }[];
     store_address: string;
+    stats?: {
+        total_products: number;
+        total_orders: number;
+        total_revenue: number;
+        average_rating: number;
+    };
 };
 
