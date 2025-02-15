@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\VendorStoryController;
 use Illuminate\Support\Facades\Route;
 
 // ========================
@@ -39,13 +40,19 @@ Route::middleware('auth')->group(function () {
     Route::post('/customer/update', [CustomerController::class, 'update'])->name('customer.update');
 
     // User Becoming a Vendor
-        Route::post('/vendor/request', [VendorController::class, 'requestVendor'])->name('vendor.request');
+    Route::post('/vendor/request', [VendorController::class, 'requestVendor'])->name('vendor.request');
 
+    // Vendor Stories
+    Route::controller(VendorStoryController::class)->group(function () {
+        Route::get('/vendor-stories/{vendorId}', 'index');
+        Route::post('/vendor-stories', 'store');
+        Route::post('/web/vendor-stories/upload', 'upload');
+    });
 
     // Verified Routes
-    Route::middleware(['verified'])->group(function () {
-        Route::match(['get', 'post'], '/cart/summary', [CartController::class, 'summary'])->name('cart.summary');
+    Route::middleware(['verified'])->group(function () {Route::match(['get', 'post'], '/cart/summary', [CartController::class, 'summary'])->name('cart.summary');
     });
 });
+
 
 require __DIR__.'/auth.php';

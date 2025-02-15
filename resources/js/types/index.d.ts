@@ -89,14 +89,15 @@ export type PageProps<
 };
 
 export type Vendor = {
-    id: number;
-    profile_image?: string | null; // Allow null in case the image isn't set
+    user_id: number;
+    profile_image?: string | null;
     store_name: string;
     address: string;
     phone: string;
     description: string;
+    status: string;
     email: string;
-    opening_hours: string | { day: string; open: string; close: string; }[]; // Allow both types
+    opening_hours: string | { day: string; open: string; close: string; }[];
     social_media_links: { platform: string; url: string }[];
     store_address: string;
 };
