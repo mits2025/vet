@@ -97,42 +97,68 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
             >
                 <div className="absolute inset-0 bg-black bg-opacity-40"></div>
                 <div className="container mx-auto px-4 relative z-10 pt-8 sm:pt-12 md:pt-0">
-
                     <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
-                        <div>
+                        <div className="w-full flex justify-center md:w-auto">
                             <div className="relative group">
-                                {/* Profile Image */}
-                                <img src={`/storage/${vendor.profile_image}`} className="w-24 h-24 rounded-full" />
+                                <div className="relative w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40">
+                                    <img
+                                        src={`/storage/${vendor.profile_image}`}
+                                        className="w-full h-full rounded-full object-cover border-4 border-white shadow-lg transition-all duration-300"
+                                        alt={vendor.store_name}
+                                    />
 
-                                {/* Upload Story Button (Only for Owner) */}
+                                    <div className="absolute inset-0 rounded-full border-primary"></div>
+                                </div>
+
                                 {auth?.user?.id === vendor.user_id && (
                                     <button
                                         className="absolute inset-0 flex items-center justify-center bg-black/50 text-white
-                       text-3xl font-bold opacity-0 group-hover:opacity-100 transition-opacity
-                       rounded-full duration-300"
+                                        text-3xl font-bold opacity-0 group-hover:opacity-100 transition-opacity
+                                        rounded-full duration-300"
                                         onClick={() => setShowUploadModal(true)}
                                     >
                                         +
                                     </button>
                                 )}
+
+                                <button
+                                    onClick={() => setShowStoryCarousel(!showStoryCarousel)}
+                                    className="absolute left-1/2 -translate-x-1/2 -bottom-4
+                                    text-xs md:text-sm btn btn-primary btn-sm md:btn-md
+                                    backdrop-blur-md bg-primary/90 hover:bg-primary
+                                    rounded-full transition-all duration-300 flex gap-2"
+                                >
+                                    {showStoryCarousel ? (
+                                        <span className="text-xs md:text-sm">Hide Stories</span>
+                                    ) : (
+                                        <span className="text-xs md:text-sm">View Stories</span>
+                                    )}
+                                </button>
+
                             </div>
-                            <button
-                                onClick={() => setShowStoryCarousel(!showStoryCarousel)}
-                                className="mt-2 btn btn-sm btn-primary"
-                            >
-                                {showStoryCarousel ? 'Hide Stories' : 'View Stories'}
-                            </button>
                         </div>
-                        {/* Story Carousel - Only show when showStoryCarousel is true */}
+
                         {showStoryCarousel && (
-                            <StoryCarousel
-                                vendorId={vendor.user_id}
-                                isOwner={auth?.user?.id === vendor.user_id}
-                                key={refreshStories.toString()}
-                                onClose={() => setShowStoryCarousel(false)}
-                            />
+                            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm transition-all duration-300">
+                                <div className="w-full max-w-sm mx-auto relative">
+                                    <button
+                                        onClick={() => setShowStoryCarousel(false)}
+                                        className="absolute -top-10 right-0 text-white hover:text-primary transition-colors duration-300"
+                                    >
+                                        Close
+                                    </button>
+                                    <div className="bg-base-100 rounded-xl overflow-hidden shadow-2xl">
+                                        <StoryCarousel
+                                            vendorId={vendor.user_id}
+                                            isOwner={auth?.user?.id === vendor.user_id}
+                                            key={refreshStories.toString()}
+                                            onClose={() => setShowStoryCarousel(false)}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                         )}
-                        {/* Upload Story Modal */}
+
                         {showUploadModal && auth?.user?.id === vendor.user_id && (
                             <UploadStoryModal
                                 vendorId={vendor.user_id}
@@ -146,9 +172,9 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                                 {vendor.store_name}
 
                                 {vendor.status === "approved" && (
-                                    <span className="badge badge-primary flex items-center gap-1 px-2 py-1 text-sm">
-                                    <FaCheck className="text-xs"/> Verified
-                                </span>
+                                    <span className="badge badge-primary flex items-center gap-1 text-[10px] sm:text-sm px-1.5 sm:px-2 py-0.5 sm:py-1">
+                                        <FaCheck className="text-[5px] sm:text-xs" /> Verified
+                                    </span>
                                 )}
                             </h1>
 
