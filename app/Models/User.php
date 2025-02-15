@@ -49,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
-    public function vendor(): HasOne
+    public function vendor()
     {
         return $this->hasOne(Vendor::class, 'user_id');
     }

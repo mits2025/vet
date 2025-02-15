@@ -37,11 +37,20 @@ class HandleInertiaRequests extends Middleware
 
         $cartItems = $cartService->getCartItems();
 
-        return [
-            ...parent::share($request),
+        return array_merge(parent::share($request), [
             'csrf_token' => csrf_token(),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $request->user() ? [
+                    'id' => $request->user()->id,
+                    'name' => $request->user()->name,
+                    'email' => $request->user()->email,
+                    // Eager load vendor relationship
+                    'vendor' => $request->user()->load('vendor')->vendor ? [
+                        'user_id' => $request->user()->vendor->user_id,
+                        'store_name' => $request->user()->vendor->store_name,
+                        'status' => $request->user()->vendor->status,
+                    ] : null,
+                ] : null,
             ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
@@ -51,6 +60,6 @@ class HandleInertiaRequests extends Middleware
             'totalPrice' => $totalPrice,
             'totalQuantity' => $totalQuantity,
             'miniCartItems' => $cartItems,
-        ];
+        ]);
     }
 }

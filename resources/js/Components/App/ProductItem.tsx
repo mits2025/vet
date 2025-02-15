@@ -7,16 +7,6 @@ export default function ProductItem({ product }: { product: Product }) {
         quantity: 1,
     });
 
-    const addToCart = () => {
-        form.post(route('cart.store', product.id), {
-            preserveScroll: true,
-            preserveState: true,
-            onError: (err) => {
-                console.log(err);
-            },
-        });
-    };
-
     return (
         <div className="card bg-white shadow-md md:shadow-lg rounded-lg w-full overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg">
             <Link href={route('product.show', product.slug)} className="block">

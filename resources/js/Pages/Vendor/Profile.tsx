@@ -42,13 +42,6 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
     const [refreshStories, setRefreshStories] = useState(false);
     const [showStoryCarousel, setShowStoryCarousel] = useState(false);
 
-    // Enhanced debug logging with null checks
-    console.log('Vendor Data:', {
-        vendorUserId: vendor.user_id,
-        authUserId: auth?.user?.id,
-        fullVendor: vendor,
-        isOwner: auth?.user?.id === vendor.user_id
-    });
 
     const handleUploadSuccess = () => {
         setRefreshStories((prev) => !prev);

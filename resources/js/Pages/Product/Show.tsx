@@ -10,7 +10,6 @@ import {arraysAreEqual} from "@/helpers";
 function Show({product, variationOptions} : {
     product: Product, variationOptions: number[]
 }) {
-        console.log(product, variationOptions);
 
     const form = useForm<{
         option_ids: Record<string, number>;
@@ -70,7 +69,6 @@ function Show({product, variationOptions} : {
     useEffect(() => {
         for (let type of product.variationTypes) {
             const selectedOptionId: number = variationOptions[type.id];
-            console.log(selectedOptionId, type.options)
             chooseOption(
                 type.id,
                 type.options.find(op => op.id ==
