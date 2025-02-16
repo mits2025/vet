@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { PageProps, Product, PaginationProps, Vendor } from "@/types";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
@@ -44,7 +44,23 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
     const [showUploadModal, setShowUploadModal] = useState(false);
     const [refreshStories, setRefreshStories] = useState(false);
     const [showStoryCarousel, setShowStoryCarousel] = useState(false);
+    const [hasStories, setHasStories] = useState(false);
 
+    useEffect(() => {
+        // Fetch stories using existing web route
+        const checkStories = async () => {
+            try {
+                const response = await fetch(`/vendor-stories/${vendor.user_id}`);
+                const data = await response.json();
+                setHasStories(Array.isArray(data) && data.length > 0);
+            } catch (error) {
+                console.error('Error fetching stories:', error);
+                setHasStories(false);
+            }
+        };
+        
+        checkStories();
+    }, [vendor.user_id]);
 
     const handleUploadSuccess = () => {
         setRefreshStories((prev) => !prev);
@@ -103,40 +119,33 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                     <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
                         <div className="w-full flex justify-center md:w-auto">
                             <div className="relative group">
-                                <div className="relative w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40">
+                                <div
+                                    className={`relative w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 cursor-pointer 
+                                        ${hasStories ? 
+                                        'border-4 border-indigo-500 ring-4 ring-indigo-500/30' : 
+                                        'border-4 border-white'}
+                                        rounded-full transition-all duration-300`}
+                                    onClick={() => setShowStoryCarousel(true)}
+                                >
                                     <img
                                         src={`/storage/${vendor.profile_image}`}
-                                        className="w-full h-full rounded-full object-cover border-4 border-white shadow-lg transition-all duration-300"
+                                        className="w-full h-full rounded-full object-cover shadow-lg"
                                         alt={vendor.store_name}
                                     />
-
-                                    <div className="absolute inset-0 rounded-full border-primary"></div>
                                 </div>
 
                                 {auth?.user?.id === vendor.user_id && (
                                     <button
-                                        className="absolute inset-0 flex items-center justify-center bg-black/50 text-white
-                                        text-3xl font-bold opacity-0 group-hover:opacity-100 transition-opacity
-                                        rounded-full duration-300"
+                                        className="absolute left-1/2 -translate-x-1/2 -bottom-4
+                                        text-xs md:text-sm btn btn-primary btn-sm md:btn-md
+                                        backdrop-blur-md bg-primary/90 hover:bg-primary
+                                        rounded-full transition-all duration-300 flex gap-2"
                                         onClick={() => setShowUploadModal(true)}
                                     >
-                                        +
+                                        Add Story
                                     </button>
                                 )}
-
-                                <button
-                                    onClick={() => setShowStoryCarousel(!showStoryCarousel)}
-                                    className="absolute left-1/2 -translate-x-1/2 -bottom-4
-                                    text-xs md:text-sm btn btn-primary btn-sm md:btn-md
-                                    backdrop-blur-md bg-primary/90 hover:bg-primary
-                                    rounded-full transition-all duration-300 flex gap-2"
-                                >
-                                    {showStoryCarousel ? (
-                                        <span className="text-xs md:text-sm">Hide Stories</span>
-                                    ) : (
-                                        <span className="text-xs md:text-sm">View Stories</span>
-                                    )}
-                                </button>
+                                
 
                             </div>
                         </div>

@@ -28,6 +28,7 @@ class DepartmentResource extends Resource
             ->schema([
                 TextInput::make('name')
                     ->live(onBlur: true)
+                    ->unique()
                     ->required()
                 ->afterStateUpdated(function (string $operation, $state, callable$set){
                     $set('slug', Str::slug($state));
@@ -80,7 +81,6 @@ class DepartmentResource extends Resource
 
     public static function canViewAny(): bool
     {
-        $user = Filament::auth()->user();
-        return $user && $user->hasRole(RolesEnum::Admin);
+        return true;
     }
 }

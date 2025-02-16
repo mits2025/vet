@@ -13,6 +13,6 @@ class VendorStory extends Model
 
     public function vendor()
     {
-        return $this->belongsTo(Vendor::class);
+        return $this->belongsTo(Vendor::class, 'vendor_id', 'user_id');
     }
 }

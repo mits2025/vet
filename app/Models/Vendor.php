@@ -68,4 +68,9 @@ class Vendor extends Model
         return $this->hasMany(Product::class, 'vendor_id');
     }
 
+    public function stories()
+    {
+        return $this->hasMany(VendorStory::class, 'vendor_id', 'user_id');
+    }
+
 }

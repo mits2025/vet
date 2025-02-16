@@ -56,7 +56,7 @@ function Navbar() {
             {/* Left section - Logo */}
             <div className="flex-1">
                 <a href="/" className="btn btn-ghost px-2 text-xl md:text-2xl font-bold text-primary">
-                    LOOKALE
+                    LOOKALYE
                 </a>
             </div>
 
@@ -64,8 +64,8 @@ function Navbar() {
             <div className="flex-none md:hidden">
                 <div className="flex items-center gap-1">
                     {/* Mobile search toggle */}
-                    <button 
-                        onClick={() => setIsSearchOpen(!isSearchOpen)} 
+                    <button
+                        onClick={() => setIsSearchOpen(!isSearchOpen)}
                         className="btn btn-ghost btn-circle"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -74,14 +74,14 @@ function Navbar() {
                     </button>
 
                     {/* Mobile menu button */}
-                    <button 
+                    <button
                         onClick={toggleMobileMenu}  // Updated to use toggle function
                         className={`btn btn-ghost btn-circle ${isMobileMenuOpen ? 'bg-base-200' : ''}`}
                     >
-                        <UserCircleIcon 
-                            className="h-10 w-10 text-primary" 
-                            fill="none" 
-                            viewBox="0 0 24 24" 
+                        <UserCircleIcon
+                            className="h-10 w-10 text-primary"
+                            fill="none"
+                            viewBox="0 0 24 24"
                             stroke="currentColor"
                         />
                     </button>
@@ -105,7 +105,7 @@ function Navbar() {
                     <div className="flex items-center gap-2">
                         {/* Store Icon - Only show if vendor exists and is approved */}
                         {user.vendor && user.vendor.status === 'approved' && (
-                            <Link 
+                            <Link
                                 href={`/s/${user.vendor.store_name}`}
                                 className="btn btn-ghost btn-circle tooltip tooltip-bottom flex items-center justify-center"
                                 data-tip="My Store"
@@ -113,17 +113,17 @@ function Navbar() {
                                 <FaStore className="h-5 w-5 text-primary" />
                             </Link>
                         )}
-                        
+
                         <div className="dropdown dropdown-end" ref={dropdownRef}>
                             {/* Profile Button */}
-                            <button 
+                            <button
                                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                                 className="avatar placeholder flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-base-200 transition"
                             >
-                                <UserCircleIcon 
-                                    className="h-10 w-10 text-primary" 
-                                    fill="none" 
-                                    viewBox="0 0 24 24" 
+                                <UserCircleIcon
+                                    className="h-10 w-10 text-primary"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
                                     stroke="currentColor"
                                 />
                             </button>
@@ -132,8 +132,8 @@ function Navbar() {
                             {isDropdownOpen && (
                                 <ul className="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-lg w-56 mt-4 border border-base-200">
                                     <li>
-                                        <Link 
-                                            href={route('profile.edit')} 
+                                        <Link
+                                            href={route('profile.edit')}
                                             className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-200 transition"
                                             onClick={() => setIsDropdownOpen(false)}
                                         >
@@ -155,9 +155,9 @@ function Navbar() {
                                         </li>
                                     )}
                                     <li>
-                                        <Link 
-                                            href={route('logout')} 
-                                            method="post" 
+                                        <Link
+                                            href={route('logout')}
+                                            method="post"
                                             className="flex items-center gap-2 px-4 py-2 rounded-lg text-error hover:bg-red-100 transition"
                                             onClick={() => setIsDropdownOpen(false)}
                                         >
@@ -199,7 +199,7 @@ function Navbar() {
                         <>
                             {/* Show store link only if vendor is approved */}
                             {user.vendor && user.vendor.status === 'approved' && (
-                                <Link 
+                                <Link
                                     href={`/s/${user.vendor.store_name}`}
                                     className="flex items-center gap-2 px-4 py-3 rounded-lg hover:bg-base-200 transition"
                                     onClick={() => setIsMobileMenuOpen(false)}
@@ -208,8 +208,8 @@ function Navbar() {
                                     <span className="font-medium text-sm">My Store</span>
                                 </Link>
                             )}
-                            <Link 
-                                href={route('profile.edit')} 
+                            <Link
+                                href={route('profile.edit')}
                                 className="flex items-center gap-2 px-4 py-3 rounded-lg hover:bg-base-200 transition"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
@@ -238,16 +238,16 @@ function Navbar() {
                         </>
                     ) : (
                         <>
-                            <Link 
-                                href={route('login')} 
+                            <Link
+                                href={route('login')}
                                 className="flex items-center gap-2 px-4 py-3 rounded-lg hover:bg-base-200 transition"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
                                 <FaSignInAlt className="text-primary" />
                                 <span className="font-medium text-sm">Login</span>
                             </Link>
-                            <Link 
-                                href={route('register')} 
+                            <Link
+                                href={route('register')}
                                 className="flex items-center gap-2 px-4 py-3 rounded-lg text-primary hover:bg-base-200 transition"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
