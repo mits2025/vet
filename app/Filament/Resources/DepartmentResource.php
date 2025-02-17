@@ -35,6 +35,7 @@ class DepartmentResource extends Resource
                 }),
                 TextInput::make('slug')
                     ->label('route')
+                    ->unique()
                     ->required(),
                 Checkbox::make('active')
             ]);

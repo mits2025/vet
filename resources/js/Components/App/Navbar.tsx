@@ -105,6 +105,7 @@ function Navbar() {
                     <div className="flex items-center gap-2">
                         {/* Store Icon - Only show if vendor exists and is approved */}
                         {user.vendor && user.vendor.status === 'approved' && (
+                            //*MY STORE ICON
                             <Link
                                 href={`/s/${user.vendor.store_name}`}
                                 className="btn btn-ghost btn-circle tooltip tooltip-bottom flex items-center justify-center"
@@ -112,6 +113,8 @@ function Navbar() {
                             >
                                 <FaStore className="h-5 w-5 text-primary" />
                             </Link>
+                            //*fUTure CREATE ICOB BUTTON
+                            //*FUTURE EDIT STORE
                         )}
 
                         <div className="dropdown dropdown-end" ref={dropdownRef}>
@@ -199,6 +202,7 @@ function Navbar() {
                         <>
                             {/* Show store link only if vendor is approved */}
                             {user.vendor && user.vendor.status === 'approved' && (
+                                //*  MY STORE ICON
                                 <Link
                                     href={`/s/${user.vendor.store_name}`}
                                     className="flex items-center gap-2 px-4 py-3 rounded-lg hover:bg-base-200 transition"
@@ -207,6 +211,10 @@ function Navbar() {
                                     <FaStore className="text-primary" />
                                     <span className="font-medium text-sm">My Store</span>
                                 </Link>
+
+                                //* FOR CREATE PRODUCT SECTION
+                                 //*FUTURE EDIT STORE
+
                             )}
                             <Link
                                 href={route('profile.edit')}

@@ -56,7 +56,7 @@ class VendorResource extends Resource
     {
         return $table->columns([
             TextColumn::make('store_name')->sortable()->searchable(),
-            TextColumn::make('address')->sortable()->searchable(),
+            TextColumn::make('address')->sortable()->searchable()->toggleable(isToggledHiddenByDefault: false),
             TextColumn::make('phone')->sortable(),
             TextColumn::make('email')->sortable(),
             TextColumn::make('status')
