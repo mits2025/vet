@@ -69,7 +69,8 @@ export default function VendorRequestForm({ vendor, className = '' }: { vendor?:
 
     const handleSocialMediaChange = (index: number, newUrl: string) => {
         const newLinks = [...data.social_media_links];
-        newLinks[index] = { platform: detectPlatform(newUrl), url: newUrl };
+        // Ensure empty or invalid URLs don't cause issues
+        newLinks[index] = newUrl.trim() === "" ? '' : { platform: detectPlatform(newUrl), url: newUrl };
         setData("social_media_links", newLinks);
     };
 

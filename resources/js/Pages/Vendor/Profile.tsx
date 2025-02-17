@@ -58,7 +58,7 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                 setHasStories(false);
             }
         };
-        
+
         checkStories();
     }, [vendor.user_id]);
 
@@ -67,16 +67,20 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
         setShowUploadModal(false);
     };
 
-    const socialMediaLinks = typeof vendor.social_media_links === "string"
-        ? JSON.parse(vendor.social_media_links)
-        : vendor.social_media_links;
+    const socialMediaLinks = Array.isArray(vendor.social_media_links)
+        ? vendor.social_media_links // Use it directly if it's already an array
+        : typeof vendor.social_media_links === "string"
+            ? JSON.parse(vendor.social_media_links)
+            : [];
 
     const parsedLinks = (() => {
         try {
-            const data = JSON.parse(socialMediaLinks); // Parse JSON safely
-            return Array.isArray(data) ? data.filter(link => link && link.url) : []; // Ensure it's an array and remove null/invalid values
+            return Array.isArray(socialMediaLinks)
+                ? socialMediaLinks.filter(link => link && link.url) // Ensure it's an array and remove null/invalid values
+                : [];
         } catch (error) {
-            return []; // If parsing fails, return an empty array
+            console.error('Error parsing social media links:', error);
+            return [];
         }
     })();
     const copyToClipboard = (text: string) => {
@@ -120,9 +124,9 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                         <div className="w-full flex justify-center md:w-auto">
                             <div className="relative group">
                                 <div
-                                    className={`relative w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 cursor-pointer 
-                                        ${hasStories ? 
-                                        'border-4 border-indigo-500 ring-4 ring-indigo-500/30' : 
+                                    className={`relative w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 cursor-pointer
+                                        ${hasStories ?
+                                        'border-4 border-indigo-500 ring-4 ring-indigo-500/30' :
                                         'border-4 border-white'}
                                         rounded-full transition-all duration-300`}
                                     onClick={() => setShowStoryCarousel(true)}
@@ -145,7 +149,7 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                                         Add Story
                                     </button>
                                 )}
-                                
+
 
                             </div>
                         </div>
@@ -191,27 +195,23 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                             </h1>
 
 
-                            {/* Social Media Icons */}
+                            {/* Social Media Icons rendering*/}
                             <div className="flex justify-center md:justify-start gap-2 md:gap-3">
                                 {parsedLinks.length > 0 ? (
                                     parsedLinks.map((social, index) => (
                                         <a
                                             key={index}
-                                            href={social.url}
+                                            href={social.url.startsWith('http') ? social.url : `https://${social.url}`} // Ensure the URL starts with 'http' or 'https'
                                             target="_blank"
                                             className="btn btn-circle btn-sm md:btn-md btn-ghost hover:bg-white/10"
                                         >
-                                            {social.platform === "facebook" &&
-                                                <FaFacebook className="text-lg md:text-xl"/>}
-                                            {social.platform === "instagram" &&
-                                                <FaInstagram className="text-lg md:text-xl"/>}
-                                            {social.platform === "twitter" &&
-                                                <FaTwitter className="text-lg md:text-xl"/>}
+                                            {social.platform === "facebook" && <FaFacebook className="text-lg md:text-xl"/>}
+                                            {social.platform === "instagram" && <FaInstagram className="text-lg md:text-xl"/>}
+                                            {social.platform === "twitter" && <FaTwitter className="text-lg md:text-xl"/>}
                                         </a>
                                     ))
                                 ) : (
-                                    <p className="text-gray-500 text-sm md:text-base">No social media links
-                                        available.</p>
+                                    <p className="text-gray-500 text-sm md:text-base">No social media links available.</p>
                                 )}
                             </div>
 
@@ -414,7 +414,7 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                 </div>
             </div>
                         {/* About Us - Optimized for mobile */}
-                        <div className="card bg-base-100 shadow-sm">
+                        <div className="card container mx-auto bg-base-100 shadow-sm">
                             <div className="card-body p-3 sm:p-6">
                                 <h2 className="card-title text-base sm:text-xl mb-2 sm:mb-3">About Us</h2>
                                 <p className="text-sm sm:text-base text-base-content/80 break-words">
@@ -435,7 +435,7 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
 
 
                         {/* Stats section - Optimized for mobile */}
-                        <div className="card bg-base-100 shadow-sm">
+                        <div className="card container mx-auto bg-base-100 shadow-sm">
                             <div className="card-body p-3 sm:p-6">
                                 <h2 className="card-title text-base sm:text-xl mb-2 sm:mb-3">Store Statistics</h2>
                                 <div className="grid grid-cols-3 gap-2 sm:gap-4">
