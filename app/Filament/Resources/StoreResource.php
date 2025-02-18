@@ -30,7 +30,7 @@ class StoreResource extends Resource
     protected static ?string $model = Vendor::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
-    protected static ?string $navigationLabel = 'Stores';
+    protected static ?string $navigationLabel = 'Store';
 
     public static function form(Form $form): Form
     {
@@ -47,7 +47,13 @@ class StoreResource extends Resource
                             ->directory('vendor-images')
                             ->imageEditor(),
 
-                        TextInput::make('store_address')
+                        FileUpload::make('cover _image')
+                            ->image()
+                            ->directory('vendor-images')
+                            ->imageEditor(),
+
+
+                        TextInput::make('address')
                             ->label('Store Address')
                             ->required()
                             ->maxLength(255),
@@ -62,9 +68,24 @@ class StoreResource extends Resource
                             ->required()
                             ->maxLength(255),
 
-                        Textarea::make('description')
-                            ->rows(4)
-                            ->maxLength(1000),
+                        Forms\Components\RichEditor::make('description')
+                            ->label('About Us Description')
+                            ->required()
+                            ->toolbarButtons([
+                                'blockquote',
+                                'bulletList',
+                                'h2',
+                                'h3',
+                                'italic',
+                                'link',
+                                'orderedList',
+                                'redo',
+                                'strike',
+                                'underline',
+                                'undo',
+                                'table',
+                            ])
+                        ->maxLength(1000)
                     ]),
 
                 Section::make('Opening Hours')
@@ -97,18 +118,34 @@ class StoreResource extends Resource
                             ->columnSpanFull(),
                     ]),
 
-                Section::make('Submit')
+                Section::make('Social Media')
                     ->schema([
-                        TextInput::make('hasExistingRequest')
-                            ->hidden(),
+                        Repeater::make('social_media_links')
+                            ->schema([
+                                Select::make('platform')
+                                    ->options([
+                                        'facebook' => 'Facebook',
+                                        'instagram' => 'Instagram',
+                                        'twitter' => 'Twitter',
+                                    ])
+                                    ->required(),
 
-                        \Filament\Forms\Components\Actions::make([
-                            \Filament\Forms\Components\Actions\Action::make('submit')
-                                ->label('Submit Request')
-                                ->color('primary')
-                                ->disabled(fn ($get) => $get('hasExistingRequest')),
-                        ]),
+                                TextInput::make('url')
+                                    ->url()
+                                    ->required()
+                                    ->prefix('https://'),
+                            ])
+                            ->columns(2)
+                            ->defaultItems(0)
+                            ->columnSpanFull(),
                     ]),
+
+                Select::make('availability')
+                    ->options([
+                        'available' => 'In Service',
+                        'out' => 'Out of Service',
+                    ]),
+
             ]);
     }
 
@@ -118,23 +155,18 @@ class StoreResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('availability')
+                    ->badge()
+                    ->color(fn ($state): string => $state === 'out' ? 'danger' : 'success'),
                 TextColumn::make('store_name')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('address')
+                    ->searchable(),
                 TextColumn::make('email')
                     ->searchable(),
                 TextColumn::make('phone')
                     ->searchable(),
-                TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (VendorStatusEnum $state): string => match ($state) {
-                        VendorStatusEnum::Approved => 'success',
-                        VendorStatusEnum::Rejected => 'danger',
-                        VendorStatusEnum::Pending => 'warning',
-                    }),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
