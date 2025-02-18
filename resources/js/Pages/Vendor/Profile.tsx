@@ -196,7 +196,7 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
 
 
                             {/* Social Media Icons rendering*/}
-                            <div className="flex justify-center md:justify-start gap-2 md:gap-3">
+                            <div className="justify-center md:justify-start gap-2 md:gap-3">
                                 {parsedLinks.length > 0 ? (
                                     parsedLinks.map((social, index) => (
                                         <a
@@ -358,12 +358,15 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
 
                                 </div>
                             </div>
+                            {/* Phone Section */}
                             {vendor.phone && (
-                                <div className="flex ml-5 -mt-2 items-start gap-2">
-                                    <FaPhone className="text-primary mt-1 flex-shrink-0"/>
-                                    <div className="flex-1">
-                                        <p className="font-medium text-sm">Phone</p>
-                                        <a href={`tel:${vendor.phone}`} className="text-sm link link-hover">
+                                <div className="flex items-center gap-3 bg-white-200 p-3 rounded-lg shadow-sm">
+                                    <div className="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-white shadow-md">
+                                        <FaPhone className="text-lg"/>
+                                    </div>
+                                    <div>
+                                        <p className="font-medium text-sm text-gray-600">Phone</p>
+                                        <a href={`tel:${vendor.phone}`} className="text-base font-semibold text-primary hover:underline">
                                             {vendor.phone}
                                         </a>
                                     </div>
