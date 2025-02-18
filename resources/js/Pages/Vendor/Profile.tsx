@@ -288,8 +288,8 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                     {/* Left Column */}
                     <div className="lg:col-span-1 space-y-4">
                         {/* Opening Hours Card - Now in left column */}
-                        <div className="bg-base-100 shadow-md card-body">
-                            <h2 className="card-title text-lg sm:text-xl mb-3">Opening Hours</h2>
+                       <div className="bg-base-100 lg:shadow-md card-body sm:p-6">
+                            <h2  className="card-title text-lg sm:text-xl mb-3">Opening Hours</h2>
                             <div className="space-y-2">
                                 {Array.isArray(openingHours) && openingHours.length > 0 ? (
                                     openingHours.map((hours, index) => {
@@ -306,15 +306,20 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                                                 <div className="flex items-center gap-2">
                                                     {isOpen ? (
                                                         <>
-                                                            <div className="w-2 h-2 rounded-full bg-success animate-pulse"></div>
+                                                            <div
+                                                                className="w-2 h-2"></div>
                                                             <FaClock className="text-primary text-sm"/>
-                                                            <span className="text-sm">{hours.open} - {hours.close}</span>
-                                                            <span className="text-success font-medium">Open</span>
+                                                            <span
+                                                                className="text-sm">{hours.open} - {hours.close}</span>
+                                                            <span
+                                                                className="text-success font-medium">Open</span> {/* Separate Open Text */}
                                                         </>
                                                     ) : (
                                                         <>
-                                                            <span className="text-gray-500 text-sm">{hours.open} - {hours.close}</span>
-                                                            <span className="text-red-500 font-medium">Closed</span>
+                                                            <span
+                                                                className="text-gray-500 text-sm">{hours.open} - {hours.close}</span>
+                                                            <span
+                                                                className="text-red-500 font-medium">Closed</span> {/* Separate Closed Text */}
                                                         </>
                                                     )}
                                                 </div>
@@ -414,27 +419,31 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                 </div>
             </div>
                         {/* About Us - Optimized for mobile */}
-                        <div className="card container mx-auto bg-base-100 shadow-sm">
-                            <div className="card-body p-3 sm:p-6">
-                                <h2 className="card-title text-base sm:text-xl mb-2 sm:mb-3">About Us</h2>
-                                <p className="text-sm sm:text-base text-base-content/80 break-words">
-                                    {showFullDescription
-                                        ? vendor.description
-                                        : `${vendor.description.substring(0, 250)}...`}
-                                    {vendor.description.length > 250 && (
-                                        <button
-                                            className="text-primary font-medium ml-1 hover:underline text-sm"
-                                            onClick={() => setShowFullDescription(!showFullDescription)}
-                                        >
-                                            {showFullDescription ? "Show Less" : "Read More"}
-                                        </button>
-                                    )}
-                                </p>
-                            </div>
-                        </div>
+            <div className="card container mx-auto bg-base-100 shadow-sm">
+                <div className="card-body p-3 sm:p-6">
+                    <h2 className="card-title text-base sm:text-xl mb-2 sm:mb-3">About Us</h2>
+                    <div
+                        className="wysiwyg-output text-sm sm:text-base text-base-content/80 break-words"
+                        dangerouslySetInnerHTML={{
+                            __html: showFullDescription
+                                ? vendor.description
+                                : `${vendor.description.substring(0, 250)}...`,
+                        }}
+                    />
+                    {vendor.description.length > 250 && (
+                        <button
+                            className="text-primary font-medium ml-1 hover:underline text-sm"
+                            onClick={() => setShowFullDescription(!showFullDescription)}
+                        >
+                            {showFullDescription ? "Show Less" : "Read More"}
+                        </button>
+                    )}
+                </div>
+            </div>
 
 
-                        {/* Stats section - Optimized for mobile */}
+
+            {/* Stats section - Optimized for mobile */}
                         <div className="card container mx-auto bg-base-100 shadow-sm">
                             <div className="card-body p-3 sm:p-6">
                                 <h2 className="card-title text-base sm:text-xl mb-2 sm:mb-3">Store Statistics</h2>
