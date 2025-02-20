@@ -288,7 +288,7 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                     {/* Left Column */}
                     <div className="lg:col-span-1 space-y-4">
                         {/* Opening Hours Card - Now in left column */}
-                       <div className="bg-base-100 lg:shadow-md card-body sm:p-6">
+                       <div className="bg-base-100 shadow-sm lg:shadow-md card-body sm:p-6">
                             <h2  className="card-title text-lg sm:text-xl mb-3">Opening Hours</h2>
                             <div className="space-y-2">
                                 {Array.isArray(openingHours) && openingHours.length > 0 ? (
@@ -424,7 +424,7 @@ function Profile({ vendor, products }: PageProps<{ vendor: Vendor, products: Pag
                         {/* About Us - Optimized for mobile */}
             <div className="card container mx-auto bg-base-100 shadow-sm">
                 <div className="card-body p-3 sm:p-6">
-                    <h2 className="card-title text-base sm:text-xl mb-2 sm:mb-3">About Us</h2>
+                    <h2 className="card-title text-base sm:text-xl mb-2 sm:mb-3">About us</h2>
                     <div
                         className="wysiwyg-output text-sm sm:text-base text-base-content/80 break-words"
                         dangerouslySetInnerHTML={{

@@ -47,7 +47,7 @@ class StoreResource extends Resource
                             ->directory('vendor-images')
                             ->imageEditor(),
 
-                        FileUpload::make('cover _image')
+                        FileUpload::make('cover_image')
                             ->image()
                             ->directory('vendor-images')
                             ->imageEditor(),
